@@ -17,20 +17,20 @@
         <tr>
           <th></th>
           <th>Name</th>
-          <th>Cappuccinos</th>
-          <th>Espressos</th>
+          <th>Cappuccini</th>
+          <th>Espressi</th>
         </tr>
       </thead>
       <tbody>
         {{#each users}}
           <tr>
             <td>
-              <button type="button" class="btn btn-primary">Cappuccino</button>
-              <button type="button" class="btn btn-success">Espresso</button>
+              <button type="button" class="btn btn-sm btn-primary" name="cappuccino,{{_id}}">Cappuccino</button>
+              <button type="button" class="btn btn-sm btn-success" name="espresso,{{_id}}">Espresso</button>
             </td>
-            <td>{{name}}</td>
-            <td>{{cappuccinos}}</td>
-            <td>{{espressos}}</td>
+            <td>{{profile.name}}</td>
+            <td>{{profile.cappuccino}}</td>
+            <td>{{profile.espresso}}</td>
           </tr>
         {{/each}}
       </tbody>
@@ -57,25 +57,36 @@
 
 <template name="adminTemplate">
   {{#if isAdminUser}}
-    {{> accountsAdmin}}
-    {{> adminCreateUser}}
-  {{else}}
-    Must be admin to see this...
+    <div class="container">
+      <div class="row">
+        <div class="col-md-9">
+          <h3>Manage Users</h3>
+          {{> accountsAdmin}}
+        </div>
+        <div class="col-md-3">
+          <h3>Add Users</h3><br>
+          {{> adminCreateUser}}
+        </div>
+      </div>
+    </div>
+    
+
+    
   {{/if}}
 </template>
 
 <template name="adminCreateUser">
-  <form class="form-inline" role="form">
+  <form class="form">
     
     <div class="form-group">
       <label for="account-email" class="control-label">Email </label>
-      <input class="form-control" type="email" id="account-email" placeholder="Email">
+      <input class="form-control" type="email" id="account-email" placeholder="james@dean.com">
     </div>
 
     <div class="form-group">
-      <label for="account-password" class="control-label">Password </label>
-      <input class="form-control" type="password" id="account-password" placeholder="Password" value="TPBallMember">
+      <label for="name" class="control-label">Name </label>
+      <input class="form-control" type="text" id="name" placeholder="James Dean">
     </div>
-        <button type="submit" class="btn btn-primary" id="createUserButton">create User</button>
+        <button type="button" class="btn btn-primary" id="createUserButton">Add</button>
   </form>
 </template>
