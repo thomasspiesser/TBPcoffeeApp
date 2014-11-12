@@ -79,9 +79,41 @@ if (Meteor.isClient) {
       });
     },
     'click .account_btn': function (event, template) {
-      bootbox.alert('account button clicked');
+      bootbox.dialog({
+        title: "How much do you want to add?",
+        message: '<div class="row"> ' +
+        '<div class="col-md-2"> ' +
+        '<div class="col-md-2">' +
+        '<div class="radio"> <label for="amount-10"> ' +
+        '<input type="radio" name="amount" id="amount-10" value="10" checked="checked"> ' +
+        '10,-€ </label>' + 
+        '</div><div class="radio"> <label for="amount-20"> ' +
+        '<input type="radio" name="amount" id="amount-20" value="20"> 20,-€ </label> ' +
+        '</div><div class="radio"> <label for="amount-50"> ' +
+        '<input type="radio" name="amount" id="amount-50" value="50"> 50,-€ </label> ' +
+        '</div>' +
+        '</div>' + 
+        '</div>' +
+        '</div>',
+        buttons: {
+          danger: {
+            label: "Cancel",
+            className: "btn-danger",
+            callback: function() {
+            }
+          },
+          success: {
+            label: "Save",
+            className: "btn-success",
+            callback: function () {
+              var amount = $("input[name='amount']:checked").val()
+              bootbox.alert("You've chosen <b>" + amount + "€</b>");
+            }  
+          }
+        }
+      });
     }
- });
+  });
 }
 
 if (Meteor.isServer) {
@@ -91,7 +123,7 @@ if (Meteor.isServer) {
         email: 'admin@admin.com',
         password: 'asdfasdf',
         profile: {
-            name: 'Admin'
+          name: 'Admin'
         }
       });
       Roles.addUsersToRoles(user, ['admin']);
@@ -101,7 +133,7 @@ if (Meteor.isServer) {
     function () {
       return Meteor.users.find({ }, { emails:0, profile: 1});
     } 
-  );
+    );
   Meteor.methods({
     createConsumer: function (options) {
       options = _.extend({ password: 'TPBMember' }, options)
