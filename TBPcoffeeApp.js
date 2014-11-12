@@ -41,7 +41,8 @@ if (Meteor.isClient) {
         profile: {
           name: name,
           cappuccino: [],
-          espresso: []
+          espresso: [],
+          account: 0
         }
       };
       Meteor.call('createConsumer', options, function (error, result) {
@@ -62,21 +63,25 @@ if (Meteor.isClient) {
   });
 
   Template.coffeeTable.events({
-    'click button': function (event, template) {
+    'click .coffee_btn': function (event, template) {
       var buttonName = event.target.name;
       var type_id = buttonName.split(",");
       var coffeetype = "profile."+type_id[0];
       var id = type_id[1];
       var name = Meteor.users.findOne( id ).profile.name;
       var obj = {};
-      var confirmation = confirm('You just ordered one ' + type_id[0] + ' for ' + name + '.\nIs that correct?');
-      if (confirmation) {
-        consumedAt = new Date();
-        obj[coffeetype] = consumedAt;
-        Meteor.users.update(id, {$push: obj});
-      }
+      bootbox.confirm('You just ordered one ' + type_id[0] + ' for ' + name + '.\nIs that correct?', function(result){
+        if (result) {
+          consumedAt = new Date();
+          obj[coffeetype] = consumedAt;
+          Meteor.users.update(id, {$push: obj});
+        }
+      });
+    },
+    'click .account_btn': function (event, template) {
+      bootbox.alert('account button clicked');
     }
-  });
+ });
 }
 
 if (Meteor.isServer) {

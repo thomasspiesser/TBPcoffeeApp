@@ -19,18 +19,22 @@
           <th>Name</th>
           <th>Cappuccini</th>
           <th>Espressi</th>
+          <th>Account</th>
+          <th>Add Credit</th>
         </tr>
       </thead>
       <tbody>
         {{#each users}}
           <tr>
             <td>
-              <button type="button" class="btn btn-sm btn-primary" name="cappuccino,{{_id}}">Cappuccino</button>
-              <button type="button" class="btn btn-sm btn-success" name="espresso,{{_id}}">Espresso</button>
+              <button type="button" class="coffee_btn btn-sm btn-primary" name="cappuccino,{{_id}}">Cappuccino</button>
+              <button type="button" class="coffee_btn btn-sm btn-primary" name="espresso,{{_id}}">Espresso</button>
             </td>
             <td>{{profile.name}}</td>
             <td>{{profile.cappuccino.length}}</td>
             <td>{{profile.espresso.length}}</td>
+            <td>{{profile.account}} € </td>
+            <td><button type="button" class="account_btn btn-sm btn-success" name="addmoney,{{_id}}">+</button></td>
           </tr>
         {{/each}}
       </tbody>
