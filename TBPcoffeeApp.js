@@ -68,16 +68,26 @@ if (Meteor.isClient) {
       var id = type_id[1];
       var obj = {};
       obj[coffeetype] = 1;
-      Meteor.users.update(id, {$inc: obj});
+      consumedAt= new Date();
+      console.log(consumedAt);
+      // Meteor.users.update(id, {$inc: obj});
     }
   });
 }
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
-    // bootstrap the admin user if they exist -- You'll be replacing the id later
-    if (Meteor.users.findOne("WD6C6grk76aa3TqwM"))
-      Roles.addUsersToRoles("WD6C6grk76aa3TqwM", ['admin']);
+    if ( Meteor.users.find().count() === 0 ) {
+      var user = Accounts.createUser({
+        email: 'admin@admin.com',
+        password: 'asdfasdf',
+        profile: {
+            name: 'Admin'
+        }
+      });
+      console.log(user);
+      Roles.addUsersToRoles(user, ['admin']);
+    }
   });
   Meteor.methods({
     createConsumer: function (options) {
