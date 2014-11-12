@@ -1,4 +1,4 @@
-Coffees = new Meteor.Collection("coffees");
+
 
 Meteor.users.allow({
   insert: function (userId, doc) {
@@ -17,6 +17,7 @@ trimInput = function(val) {
 }
 
 if (Meteor.isClient) {
+  Meteor.subscribe('TBPCoffeeCollection');
   Template.adminTemplate.helpers({
     // check if user is an admin
     isAdminUser: function() {
@@ -66,10 +67,14 @@ if (Meteor.isClient) {
       var type_id = buttonName.split(",");
       var coffeetype = "profile."+type_id[0];
       var id = type_id[1];
+      var name = Meteor.users.findOne( id ).profile.name;
       var obj = {};
-      consumedAt = new Date();
-      obj[coffeetype] = consumedAt;
-      Meteor.users.update(id, {$push: obj});
+      var confirmation = confirm('You just ordered one ' + type_id[0] + ' for ' + name + '.\nIs that correct?');
+      if (confirmation) {
+        consumedAt = new Date();
+        obj[coffeetype] = consumedAt;
+        Meteor.users.update(id, {$push: obj});
+      }
     }
   });
 }
@@ -84,13 +89,17 @@ if (Meteor.isServer) {
             name: 'Admin'
         }
       });
-      console.log(user);
       Roles.addUsersToRoles(user, ['admin']);
     }
   });
+  Meteor.publish('TBPCoffeeCollection', 
+    function () {
+      return Meteor.users.find({ }, { emails:0, profile: 1});
+    } 
+  );
   Meteor.methods({
     createConsumer: function (options) {
-      _.extend({ password: 'TPBMember' }, options)
+      options = _.extend({ password: 'TPBMember' }, options)
       var user = Accounts.createUser(options);
       return user;
     }
