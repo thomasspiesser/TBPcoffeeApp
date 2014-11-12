@@ -39,8 +39,8 @@ if (Meteor.isClient) {
         email: email,
         profile: {
           name: name,
-          cappuccino: 0,
-          espresso: 0
+          cappuccino: [],
+          espresso: []
         }
       };
       Meteor.call('createConsumer', options, function (error, result) {
@@ -67,10 +67,9 @@ if (Meteor.isClient) {
       var coffeetype = "profile."+type_id[0];
       var id = type_id[1];
       var obj = {};
-      obj[coffeetype] = 1;
-      consumedAt= new Date();
-      console.log(consumedAt);
-      // Meteor.users.update(id, {$inc: obj});
+      consumedAt = new Date();
+      obj[coffeetype] = consumedAt;
+      Meteor.users.update(id, {$push: obj});
     }
   });
 }
