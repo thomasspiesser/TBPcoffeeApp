@@ -61,6 +61,9 @@ if (Meteor.isClient) {
       var users = Meteor.users.find().fetch();
       var sortedUsers = _.sortBy(users, function (user) {return -user.profile.espresso.length - user.profile.cappuccino.length} )
       return sortedUsers
+    },
+    isAdmin: function () {
+      return this.emails[0].address === 'admin@admin.com' ? true : false;
     }
   });
 
@@ -123,13 +126,13 @@ if (Meteor.isClient) {
   });
 
   Template.changeAccountModal.helpers({
-        "user": function() {
+        user: function() {
           var user = Meteor.users.findOne( Session.get("addMoneyUser") );
-          return user.profile.name;
+          if (typeof(user) !== 'undefined') {
+            return user.profile.name;
+          }
         }
-      }
-  )
-
+  })
 }
 
 

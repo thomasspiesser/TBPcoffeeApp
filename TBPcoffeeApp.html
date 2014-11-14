@@ -49,6 +49,8 @@
       </thead>
       <tbody>
         {{#each users}}
+          {{#if isAdmin}}
+          {{else}}
           <tr>
             <td>
               <button type="button" class="btn coffee_btn btn-sm btn-primary" name="cappuccino">Cappuccino</button>
@@ -61,6 +63,7 @@
             <td><button type="button" class="btn account_btn btn-sm btn-success" name="addmoney">+</button>
             </td>
           </tr>
+          {{/if}}
         {{/each}}
       </tbody>
     </table>
