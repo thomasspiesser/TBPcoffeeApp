@@ -65,12 +65,11 @@ if (Meteor.isClient) {
   Template.coffeeTable.events({
     'click .coffee_btn': function (event, template) {
       var buttonName = event.target.name;
-      var type_id = buttonName.split(",");
-      var coffeetype = "profile."+type_id[0];
-      var id = type_id[1];
+      var coffeetype = "profile." + buttonName;
+      var id = this._id;
       var name = Meteor.users.findOne( id ).profile.name;
       var obj = {};
-      bootbox.confirm('You just ordered one ' + type_id[0] + ' for ' + name + '.\nIs that correct?', function(result){
+      bootbox.confirm('You just ordered one ' + buttonName + ' for ' + name + '.\nIs that correct?', function(result){
         if (result) {
           consumedAt = new Date();
           obj[coffeetype] = consumedAt;
@@ -78,43 +77,59 @@ if (Meteor.isClient) {
         }
       });
     },
-    'click .account_btn': function (event, template) {
-      bootbox.dialog({
-        title: "How much do you want to add?",
-        message: '<div class="row"> ' +
-        '<div class="col-md-2"> ' +
-        '<div class="col-md-2">' +
-        '<div class="radio"> <label for="amount-10"> ' +
-        '<input type="radio" name="amount" id="amount-10" value="10" checked="checked"> ' +
-        '10,-€ </label>' + 
-        '</div><div class="radio"> <label for="amount-20"> ' +
-        '<input type="radio" name="amount" id="amount-20" value="20"> 20,-€ </label> ' +
-        '</div><div class="radio"> <label for="amount-50"> ' +
-        '<input type="radio" name="amount" id="amount-50" value="50"> 50,-€ </label> ' +
-        '</div>' +
-        '</div>' + 
-        '</div>' +
-        '</div>',
-        buttons: {
-          danger: {
-            label: "Cancel",
-            className: "btn-danger",
-            callback: function() {
-            }
-          },
-          success: {
-            label: "Save",
-            className: "btn-success",
-            callback: function () {
-              var amount = $("input[name='amount']:checked").val()
-              bootbox.alert("You've chosen <b>" + amount + "€</b>");
-            }  
-          }
-        }
-      });
+    'click .account_btn': function(event, template) {
+      $("#changeAccountModal").modal({show: true});
+      Session.set("addMoneyUser", this._id);
     }
+
+
+  //    function (event, template) {
+  //  bootbox.dialog({
+  //    title: "How much do you want to add?",
+  //    message: '<div class="row"> ' +
+  //    '<div class="col-md-2"> ' +
+    //    '<div class="col-md-2">' +
+    //    '<div class="radio"> <label for="amount-10"> ' +
+    //    '<input type="radio" name="amount" id="amount-10" value="10" checked="checked"> ' +
+    //    '10,-€ </label>' +
+    //    '</div><div class="radio"> <label for="amount-20"> ' +
+    //    '<input type="radio" name="amount" id="amount-20" value="20"> 20,-€ </label> ' +
+    //    '</div><div class="radio"> <label for="amount-50"> ' +
+    //    '<input type="radio" name="amount" id="amount-50" value="50"> 50,-€ </label> ' +
+    //    '</div>' +
+    //    '</div>' +
+    //    '</div>' +
+    //    '</div>',
+    //    buttons: {
+    //      danger: {
+    //        label: "Cancel",
+    //        className: "btn-danger",
+    //        callback: function() {
+    //        }
+    //      },
+    //      success: {
+    //        label: "Save",
+    //        className: "btn-success",
+    //        callback: function () {
+    //          var amount = $("input[name='amount']:checked").val()
+    //          bootbox.alert("You've chosen <b>" + amount + "€</b>");
+    //        }
+    //      }
+    //    }
+    //  });
+    //}
   });
+
+  Template.changeAccountModal.helpers({
+        "user": function() {
+          var user = Meteor.users.findOne( Session.get("addMoneyUser") );
+          return user.profile.name;
+        }
+      }
+  )
+
 }
+
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
@@ -129,11 +144,13 @@ if (Meteor.isServer) {
       Roles.addUsersToRoles(user, ['admin']);
     }
   });
+
   Meteor.publish('TBPCoffeeCollection', 
     function () {
       return Meteor.users.find({ }, { emails:0, profile: 1});
     } 
-    );
+  );
+
   Meteor.methods({
     createConsumer: function (options) {
       options = _.extend({ password: 'TPBMember' }, options)
