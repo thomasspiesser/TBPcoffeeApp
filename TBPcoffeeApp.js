@@ -58,7 +58,9 @@ if (Meteor.isClient) {
 
   Template.coffeeTable.helpers({
     users: function () {
-      return Meteor.users.find();
+      var users = Meteor.users.find().fetch();
+      var sortedUsers = _.sortBy(users, function (user) {return -user.profile.espresso.length - user.profile.cappuccino.length} )
+      return sortedUsers
     }
   });
 
