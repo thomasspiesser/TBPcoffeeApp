@@ -19,13 +19,36 @@
                     <button type="button" class="close" data-dismiss="modal">×</button>
                     <h3 id="myModalLabel">Manage Account</h3>
                 </div>
+
                 <div class="modal-body">
-                    <p>{{user}}</p>
-                    <input id="amount" type="text"/>
+                  <p>How much credit do you want add to <b>{{user}}'s</b> account?</p> 
+                  <form role="form" class="account_form">
+                    <div class="radio">
+                      <label>
+                        <input type="radio" class="btn radio_button" name="radio-amount" id="radio-10" value="10" checked> 10,-€
+                      </label>
+                    </div>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" class="btn radio_button" name="radio-amount" id="radio-20" value="20"> 20,-€
+                      </label>
+                    </div>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" class="btn radio_button" name="radio-amount" id="radio-50" value="50"> 50,-€
+                      </label>
+                    </div>            
+                    <div class="radio input">
+                      <label>
+                        <input type="radio" class="btn radio_button" name="radio-amount" id="radio-free" value="free"> <input name="free-amount" id="free-amount" type="text"/>
+                      </label>
+                    </div>
+                  </form>
                 </div>
+
                 <div class="modal-footer">
                     <button class="btn" data-dismiss="modal">Cancel</button>
-                    <button class="btn btn-primary" data-dismiss="modal">Accept</button>
+                    <button class="btn btn-primary" id="saveAccount" data-dismiss="modal">Accept</button>
                 </div>
             </div>
         </div>
@@ -39,7 +62,7 @@
     <table class='table table-striped'>
       <thead>
         <tr>
-          <th></th>
+          <th>Drink</th>
           <th>Name</th>
           <th>Cappuccini</th>
           <th>Espressi</th>

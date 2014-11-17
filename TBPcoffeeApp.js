@@ -42,7 +42,7 @@ if (Meteor.isClient) {
           name: name,
           cappuccino: [],
           espresso: [],
-          account: 0
+          account: 0.00
         }
       };
       Meteor.call('createConsumer', options, function (error, result) {
@@ -80,46 +80,24 @@ if (Meteor.isClient) {
       });
     },
     'click .account_btn': function(event, template) {
-      $("#changeAccountModal").modal({show: true});
+      $("#changeAccountModal").modal("show");
       Session.set("addMoneyUser", this._id);
     }
+  });
 
-
-  //    function (event, template) {
-  //  bootbox.dialog({
-  //    title: "How much do you want to add?",
-  //    message: '<div class="row"> ' +
-  //    '<div class="col-md-2"> ' +
-    //    '<div class="col-md-2">' +
-    //    '<div class="radio"> <label for="amount-10"> ' +
-    //    '<input type="radio" name="amount" id="amount-10" value="10" checked="checked"> ' +
-    //    '10,-€ </label>' +
-    //    '</div><div class="radio"> <label for="amount-20"> ' +
-    //    '<input type="radio" name="amount" id="amount-20" value="20"> 20,-€ </label> ' +
-    //    '</div><div class="radio"> <label for="amount-50"> ' +
-    //    '<input type="radio" name="amount" id="amount-50" value="50"> 50,-€ </label> ' +
-    //    '</div>' +
-    //    '</div>' +
-    //    '</div>' +
-    //    '</div>',
-    //    buttons: {
-    //      danger: {
-    //        label: "Cancel",
-    //        className: "btn-danger",
-    //        callback: function() {
-    //        }
-    //      },
-    //      success: {
-    //        label: "Save",
-    //        className: "btn-success",
-    //        callback: function () {
-    //          var amount = $("input[name='amount']:checked").val()
-    //          bootbox.alert("You've chosen <b>" + amount + "€</b>");
-    //        }
-    //      }
-    //    }
-    //  });
-    //}
+  Template.changeAccountModal.events({
+    'click #radio-free': function (event, template) {
+      template.$('input').focus();       
+    },
+    'keydown .account_form': function (event, template) {
+      if(event.keyCode == 13) {
+        console.log("enter pressed");
+        saveAccountChanges();
+      }
+    },
+    'click #saveAccount': function (event, template) {
+      saveAccountChanges();
+    }
   });
 
   Template.changeAccountModal.helpers({
@@ -129,9 +107,27 @@ if (Meteor.isClient) {
         }
       }
   )
-
 }
 
+function saveAccountChanges(){
+  var id = Session.get("addMoneyUser");
+  var radio_amount;
+  $('input[name=radio-amount]:checked').each(function() {
+      radio_amount = $(this).val();
+  });
+  if (radio_amount == "free") {
+    var free_amount = $('input[name=free-amount]').val();
+    free_amount = free_amount.replace(',','.');
+    var amount = parseFloat(free_amount);
+  } else {
+    var amount = parseFloat(radio_amount);
+  };
+  var obj = {};
+  var user = Meteor.users.findOne(id);
+  var old_amount = user.profile.account;
+  obj["profile.account"] = old_amount + amount;
+  Meteor.users.update(id, {$set: obj});
+}
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
