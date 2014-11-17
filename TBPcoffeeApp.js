@@ -94,12 +94,14 @@ if (Meteor.isClient) {
     },
     'keydown .account_form': function (event, template) {
       if(event.keyCode == 13) {
-        console.log("enter pressed");
         saveAccountChanges();
+        $("#changeAccountModal").modal("hide");
+        return false;
       }
     },
     'click #saveAccount': function (event, template) {
       saveAccountChanges();
+      return false;
     }
   });
 
@@ -122,6 +124,7 @@ function saveAccountChanges(){
   });
   if (radio_amount == "free") {
     var free_amount = $('input[name=free-amount]').val();
+    if (free_amount == "") {free_amount = 0};
     free_amount = free_amount.replace(',','.');
     var amount = parseFloat(free_amount);
   } else {
@@ -132,6 +135,7 @@ function saveAccountChanges(){
   var old_amount = user.profile.account;
   obj["profile.account"] = old_amount + amount;
   Meteor.users.update(id, {$set: obj});
+  $('.account_form')[0].reset();
 }
 
 if (Meteor.isServer) {
