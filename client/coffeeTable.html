@@ -1,0 +1,36 @@
+<template name="coffeeTable">
+  <div class="container">
+    <table class='table table-striped'>
+      <thead>
+        <tr>
+          <th>Drink</th>
+          <th>Name</th>
+          <th>Cappuccini</th>
+          <th>Espressi</th>
+          <th>Account</th>
+          <th>Add Credit</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each users}}
+          {{#if isAdmin}}
+          {{else}}
+          <tr>
+            <td>
+              <button type="button" class="btn coffeeBtn btn-sm btn-primary" name="cappuccino">Cappuccino</button>
+              <button type="button" class="btn coffeeBtn btn-sm btn-primary" name="espresso">Espresso</button>
+            </td>
+            <td>{{profile.name}}</td>
+            <td>{{profile.cappuccino.length}}</td>
+            <td>{{profile.espresso.length}}</td>
+            <td>{{profile.account}} € </td>
+            <td><button type="button" class="btn accountBtn btn-sm btn-success">+</button>
+            </td>
+          </tr>
+          {{/if}}
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  {{> changeAccountModal}}
+</template>
