@@ -162,7 +162,7 @@ if (Meteor.isServer) {
 		function () {
 			return Meteor.users.find({ }, { emails:0, profile: 1});
 		} 
-	);
+		);
 
 	Meteor.methods({
 		createConsumer: function (options) {
