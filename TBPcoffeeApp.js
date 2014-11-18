@@ -32,9 +32,9 @@ if (Meteor.isClient) {
   });
 
   Template.adminCreateUser.events({
-    'click #createUserButton': function (event, t) {
-      var email = t.find('#account-email').value;
-      var name = t.find('#name').value;
+    'click #createUserButton': function (event, template) {
+      var email = template.find('#account-email').value;
+      var name = template.find('#name').value;
       var email = trimInput(email);
       var options = {
         email: email,
@@ -68,13 +68,13 @@ if (Meteor.isClient) {
   });
 
   Template.coffeeTable.events({
-    'click .coffee_btn': function (event, template) {
+    'click .coffeeBtn': function (event, template) {
       var buttonName = event.target.name;
       var coffeetype = "profile." + buttonName;
       var id = this._id;
       var name = Meteor.users.findOne( id ).profile.name;
       var obj = {};
-      bootbox.confirm('You just ordered one ' + buttonName + ' for ' + name + '.\nIs that correct?', function(result){
+      bootbox.confirm('You just ordered one <b>' + buttonName + '</b> for <b>' + name + '</b>.\nIs that correct?', function(result){
         if (result) {
           consumedAt = new Date();
           obj[coffeetype] = consumedAt;
@@ -82,7 +82,7 @@ if (Meteor.isClient) {
         }
       });
     },
-    'click .account_btn': function(event, template) {
+    'click .accountBtn': function(event, template) {
       $("#changeAccountModal").modal("show");
       Session.set("addMoneyUser", this._id);
     }
@@ -92,7 +92,7 @@ if (Meteor.isClient) {
     'click #radio-free': function (event, template) {
       template.$('input').focus();       
     },
-    'keydown .account_form': function (event, template) {
+    'keydown .accountForm': function (event, template) {
       if(event.keyCode == 13) {
         saveAccountChanges();
         $("#changeAccountModal").modal("hide");
@@ -106,36 +106,35 @@ if (Meteor.isClient) {
   });
 
   Template.changeAccountModal.helpers({
-        user: function() {
-          var user = Meteor.users.findOne( Session.get("addMoneyUser") );
-          if (typeof(user) !== 'undefined') {
-            return user.profile.name;
-          }
-        }
+    user: function() {
+      var user = Meteor.users.findOne( Session.get("addMoneyUser") );
+      if (typeof(user) !== 'undefined') {
+        return user.profile.name;
       }
-  )
+    }
+  });
 }
 
 function saveAccountChanges(){
   var id = Session.get("addMoneyUser");
-  var radio_amount;
+  var radioAmount;
   $('input[name=radio-amount]:checked').each(function() {
-      radio_amount = $(this).val();
+      radioAmount = $(this).val();
   });
-  if (radio_amount == "free") {
-    var free_amount = $('input[name=free-amount]').val();
-    if (free_amount == "") {free_amount = 0};
-    free_amount = free_amount.replace(',','.');
-    var amount = parseFloat(free_amount);
+  if (radioAmount == "free") {
+    var freeAmount = $('input[name=free-amount]').val();
+    if (freeAmount == "") {freeAmount = 0};
+    freeAmount = freeAmount.replace(',','.');
+    var amount = parseFloat(freeAmount);
   } else {
-    var amount = parseFloat(radio_amount);
+    var amount = parseFloat(radioAmount);
   };
   var obj = {};
   var user = Meteor.users.findOne(id);
-  var old_amount = user.profile.account;
-  obj["profile.account"] = old_amount + amount;
+  var oldAmount = user.profile.account;
+  obj["profile.account"] = oldAmount + amount;
   Meteor.users.update(id, {$set: obj});
-  $('.account_form')[0].reset();
+  $('.accountForm')[0].reset();
 }
 
 if (Meteor.isServer) {

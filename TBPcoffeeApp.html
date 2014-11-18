@@ -22,25 +22,25 @@
 
                 <div class="modal-body">
                   <p>How much credit do you want add to <b>{{user}}'s</b> account?</p> 
-                  <form role="form" class="account_form">
+                  <form role="form" class="accountForm">
                     <div class="radio">
                       <label>
-                        <input type="radio" class="btn radio_button" name="radio-amount" id="radio-10" value="10" checked> 10,-€
+                        <input type="radio" class="btn radioButton" name="radio-amount" id="radio-10" value="10" checked> 10,-€
                       </label>
                     </div>
                     <div class="radio">
                       <label>
-                        <input type="radio" class="btn radio_button" name="radio-amount" id="radio-20" value="20"> 20,-€
+                        <input type="radio" class="btn radioButton" name="radio-amount" id="radio-20" value="20"> 20,-€
                       </label>
                     </div>
                     <div class="radio">
                       <label>
-                        <input type="radio" class="btn radio_button" name="radio-amount" id="radio-50" value="50"> 50,-€
+                        <input type="radio" class="btn radioButton" name="radio-amount" id="radio-50" value="50"> 50,-€
                       </label>
                     </div>            
                     <div class="radio input">
                       <label>
-                        <input type="radio" class="btn radio_button" name="radio-amount" id="radio-free" value="free"> <input name="free-amount" id="free-amount" type="text"/>
+                        <input type="radio" class="btn radioButton" name="radio-amount" id="radio-free" value="free"> <input name="free-amount" id="free-amount" type="text"/>
                       </label>
                     </div>
                   </form>
@@ -76,14 +76,14 @@
           {{else}}
           <tr>
             <td>
-              <button type="button" class="btn coffee_btn btn-sm btn-primary" name="cappuccino">Cappuccino</button>
-              <button type="button" class="btn coffee_btn btn-sm btn-primary" name="espresso">Espresso</button>
+              <button type="button" class="btn coffeeBtn btn-sm btn-primary" name="cappuccino">Cappuccino</button>
+              <button type="button" class="btn coffeeBtn btn-sm btn-primary" name="espresso">Espresso</button>
             </td>
             <td>{{profile.name}}</td>
             <td>{{profile.cappuccino.length}}</td>
             <td>{{profile.espresso.length}}</td>
             <td>{{profile.account}} € </td>
-            <td><button type="button" class="btn account_btn btn-sm btn-success" name="addmoney">+</button>
+            <td><button type="button" class="btn accountBtn btn-sm btn-success" name="addmoney">+</button>
             </td>
           </tr>
           {{/if}}
