@@ -1,1 +1,9 @@
 /* CSS declarations go here */
+#chart1 svg {
+  height: 400px;
+}
+#chart1 {
+margin: 10px;
+min-width: 100px;
+min-height: 100px;
+}

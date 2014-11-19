@@ -1,5 +1,5 @@
 <head>
-  <title>TBPcoffeeApp</title>
+  <title>TBP Coffee App</title>
 </head>
 
 <body>
@@ -13,6 +13,14 @@
   {{> coffeeTable}}
 </template>
 
+<template name="stats">
+  {{> navigation}}
+    <div class="container">
+      {{> adminTemplate}}
+    </div>
+  {{> statsPage}}
+</template>
+
 <template name="navigation">
   <div class="navbar navbar-default" role="navigation">
     <div class="navbar-header">
@@ -22,6 +30,13 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">  
+        <li>
+          <a href="/">Home</a>
+        </li>
+        <li class="divider"></li>
+        <li>
+          <a href="/stats">Stats</a>
+        </li>      
       </ul>
       <ul class="nav navbar-nav navbar-right">
       {{> loginButtons }}

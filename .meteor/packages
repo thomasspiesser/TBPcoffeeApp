@@ -12,4 +12,6 @@ mrt:accounts-ui-bootstrap-3
 gfk:notifications
 mizzao:bootboxjs
 iron:router
+pfafman:nvd3
+d3
 
