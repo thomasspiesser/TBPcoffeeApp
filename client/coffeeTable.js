@@ -33,6 +33,6 @@ Template.coffeeTable.events({
 	},
 	'click .accountBtn': function(event, template) {
 		$("#changeAccountModal").modal("show");
-		Session.set("addMoneyUser", this._id);
+		Session.set("changeAccountUser", this._id);
 	}
 });

@@ -1,5 +1,5 @@
 Template.changeAccountModal.events({
-	'click #radioFree': function (event, template) {
+	'click #radioInput': function (event, template) {
 		template.$('input').focus();       
 	},
 	'keypress .accountForm': function (event, template) {
@@ -17,7 +17,7 @@ Template.changeAccountModal.events({
 
 Template.changeAccountModal.helpers({
 	user: function () {
-		var user = Meteor.users.findOne( Session.get("addMoneyUser") );
+		var user = Meteor.users.findOne( Session.get("changeAccountUser") );
 		if (typeof(user) !== 'undefined') {
 			return user.profile.name;
 		}
@@ -25,10 +25,10 @@ Template.changeAccountModal.helpers({
 });
 
 saveAccountChanges = function (event, template) {
-	var id = Session.get("addMoneyUser");
+	var id = Session.get("changeAccountUser");
 	var radioAmount = template.find('input[name=radioAmount]:checked').value;
-	if (radioAmount == "free") {
-		var inputAmount = template.find('input[name=freeAmount]').value;
+	if (radioAmount == "input") {
+		var inputAmount = template.find('input[name=inputAmount]').value;
 		inputAmount = inputAmount.replace(',','.');
 		if (inputAmount == "") {inputAmount = 0};
 		var amount = parseFloat(inputAmount);
