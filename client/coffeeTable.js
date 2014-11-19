@@ -8,11 +8,14 @@ Template.coffeeTable.helpers({
 		return this.emails[0].address === 'admin@admin.com' ? true : false;
 	},
 	getAccount: function () {
-		var account = 0;
-		for (var i = this.profile.account.length - 1; i >= 0; i--) {
-			account += this.profile.account[i]["amount"];
+		var espressoAmount = this.profile.espresso.length * 0.4; // FIXME: get price from DB
+		var cappuccinoAmount = this.profile.cappuccino.length * 0.5; // FIXME: get price from DB
+		var creditArray = _.pluck(this.profile.account, 'amount');
+		var account = - espressoAmount - cappuccinoAmount;
+		for (var i = 0; i < creditArray.length; i++) {
+			account += creditArray[i];
 		};
-		return account;
+		return account.toFixed(2);
 	}
 });
 
