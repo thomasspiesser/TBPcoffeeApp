@@ -1,0 +1,28 @@
+<head>
+  <title>TBPcoffeeApp</title>
+</head>
+
+<body>
+  {{> navigation}}
+    <div class="container">
+      {{> adminTemplate}}
+    </div>
+  {{> coffeeTable}}
+</body>
+
+<template name="navigation">
+  <div class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">TBP Coffee App</a>
+      </div>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">  
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      {{> loginButtons }}
+      </ul>
+    </div>
+	</div>
+</template>
