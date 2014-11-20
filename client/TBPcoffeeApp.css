@@ -1,9 +1,9 @@
 /* CSS declarations go here */
-#chart1 svg {
-  height: 400px;
+#coffeeChart svg {
+  height: 600px;
 }
-#chart1 {
+#coffeeChart {
 margin: 10px;
-min-width: 100px;
-min-height: 100px;
+min-width: 400px;
+min-height: 400px;
 }

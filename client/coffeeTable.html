@@ -3,12 +3,12 @@
     <table class='table table-striped'>
       <thead>
         <tr>
-          <th>Drink</th>
           <th>Name</th>
+          <th>Drink</th>
           <th>Cappuccini</th>
           <th>Espressi</th>
-          <th>Account</th>
           <th>Add Credit</th>
+          <th>Account</th>
         </tr>
       </thead>
       <tbody>
@@ -16,16 +16,17 @@
           {{#if isAdmin}}
           {{else}}
           <tr>
+            <td>{{profile.name}}</td>
             <td>
               <button type="button" class="btn coffeeBtn btn-sm btn-primary" name="cappuccino">Cappuccino</button>
               <button type="button" class="btn coffeeBtn btn-sm btn-primary" name="espresso">Espresso</button>
             </td>
-            <td>{{profile.name}}</td>
             <td>{{profile.cappuccino.length}}</td>
             <td>{{profile.espresso.length}}</td>
-            <td>{{getAccount}} € </td>
-            <td><button type="button" class="btn accountBtn btn-sm btn-success">+</button>
+            <td>
+              <button type="button" class="btn accountBtn btn-sm btn-success">+</button>
             </td>
+            <td>{{getAccount}} € </td>
           </tr>
           {{/if}}
         {{/each}}
