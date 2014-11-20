@@ -5,8 +5,14 @@
 <body>
 </body>
 
+<template name="coffeeAppLayout">
+  <header>
+    {{> navigation}}
+  </header>
+    {{> yield}}
+</template>
+
 <template name="home">
-  {{> navigation}}
     <div class="container">
       {{> adminTemplate}}
     </div>
@@ -14,11 +20,7 @@
 </template>
 
 <template name="stats">
-  {{> navigation}}
-    <div class="container">
-      {{> adminTemplate}}
-    </div>
-  {{> statsPage}}
+  {{> diagram}}
 </template>
 
 <template name="navigation">
