@@ -1,9 +1,12 @@
 /* CSS declarations go here */
 #coffeeChart svg {
-  height: 600px;
+	height: 600px;
 }
 #coffeeChart {
-margin: 10px;
-min-width: 400px;
-min-height: 400px;
+	margin: 10px;
+	min-width: 400px;
+	min-height: 400px;
+}
+.coffeeTable {
+	font-size: 12pt;
 }

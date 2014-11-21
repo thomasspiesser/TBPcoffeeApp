@@ -1,6 +1,6 @@
 <template name="coffeeTable">
   <div class="container">
-    <table class='table table-striped'>
+    <table class='table coffeeTable table-striped'>
       <thead>
         <tr>
           <th>Name</th>
@@ -18,13 +18,13 @@
           <tr>
             <td>{{profile.name}}</td>
             <td>
-              <button type="button" class="btn coffeeBtn btn-sm btn-primary" name="cappuccino">Cappuccino</button>
-              <button type="button" class="btn coffeeBtn btn-sm btn-primary" name="espresso">Espresso</button>
+              <button type="button" class="btn coffeeBtn btn btn-primary" name="cappuccino"><b>Cappuccino</b></button>
+              <button type="button" class="btn coffeeBtn btn btn-primary" name="espresso"><b>Espresso</b></button>
             </td>
             <td>{{profile.cappuccino.length}}</td>
             <td>{{profile.espresso.length}}</td>
             <td>
-              <button type="button" class="btn accountBtn btn-sm btn-success">+</button>
+              <button type="button" class="btn accountBtn btn btn-success"><b>+</b></button>
             </td>
             <td>{{getAccount}} € </td>
           </tr>
