@@ -1,4 +1,9 @@
 Template.diagram.rendered = function () {
+	var data = collectData();
+  visualizeData(data); 
+};
+
+function collectData () {
 	var coffeeData = [];
 	coffeeData[0] = {
 		key: "Cappuccino",
@@ -13,7 +18,7 @@ Template.diagram.rendered = function () {
 	
 	var users = Meteor.users.find().fetch();
 	users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com'; });
-
+	
 	var sortedUsers = _.sortBy(users, function (user) {return -user.profile.espresso.length -user.profile.cappuccino.length} )
 	
 	for (var i = 0; i < sortedUsers.length; i++) {
@@ -33,28 +38,31 @@ Template.diagram.rendered = function () {
 		};
 		coffeeData[1].values.push(userData);
 	};
+	return coffeeData;
+};
 
+function visualizeData(data) {  
 	nv.addGraph(function() {
+		var width = 600, height = 60*data.length+"px";
 		var chart = nv.models.multiBarHorizontalChart()
 		.x(function(d) { return d.name })
 		.y(function(d) { return d.coffee })
-		.margin({top: 20, right: 20, bottom: 50, left: 200})
+		.margin({top: 20, right: 20, bottom: 20, left: 120})
 		.showValues(true)           //Show bar value next to each bar.
 		.tooltips(true)             //Show tooltips on hover.
 		.transitionDuration(350)
 		.stacked(true)
 		.showControls(true);        //Allow user to switch between "Grouped" and "Stacked" mode.
-
+		
 		chart.yAxis
 		.tickFormat(d3.format(',f'));
 
 		d3.select('#coffeeChart svg')
-		.datum(coffeeData)
-		.call(chart);
+		.datum(data)
+		.call(chart) .attr('width', width).attr('height', height);
 
 		nv.utils.windowResize(chart.update);
 
 		return chart;
 	});
 };
-
