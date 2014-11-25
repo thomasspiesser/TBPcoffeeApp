@@ -1,15 +1,27 @@
 Template.coffeeTable.helpers({
 	users: function () {
 		var users = Meteor.users.find().fetch();
-		var sortedUsers = _.sortBy(users, function (user) {return -user.profile.espresso.length - user.profile.cappuccino.length} )
-		return sortedUsers
+		users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com';});
+		var sortedUsers = _.sortBy(users, function (user) {return -user.profile.espresso.length -user.profile.cappuccino.length} ) // FIXME: sort users according to current month
+		return sortedUsers;
 	},
-	isAdmin: function () {
-		return this.emails[0].address === 'admin@admin.com' ? true : false;
+	getMonthYear: function () {
+		var currentMonth = new Date().getMonth();
+		var currentYear = new Date().getFullYear();
+		var monthArray=new Array("January","February","March",
+			"April","May","June","July","August","September",
+			"October","November","December");
+		return monthArray[currentMonth]+" "+currentYear;
+	},
+	getCoffeeCount: function () {
+		var currentMonth = new Date().getMonth();
+		var espressoCount = _.filter(this.profile.espresso, function(date){ return date.getMonth() == currentMonth; }).length;
+		var cappuccinoCount = _.filter(this.profile.cappuccino, function(date){ return date.getMonth() == currentMonth; }).length;
+		return {espresso:espressoCount, cappuccino:cappuccinoCount};
 	},
 	getAccount: function () {
-		var espressoAmount = this.profile.espresso.length * 0.4; // FIXME: get price from DB
-		var cappuccinoAmount = this.profile.cappuccino.length * 0.5; // FIXME: get price from DB
+		var espressoAmount = this.profile.espresso.length * 0.3; // FIXME: get price from DB
+		var cappuccinoAmount = this.profile.cappuccino.length * 0.4; // FIXME: get price from DB
 		var creditArray = _.pluck(this.profile.account, 'amount');
 		var account = - espressoAmount - cappuccinoAmount;
 		for (var i = 0; i < creditArray.length; i++) {

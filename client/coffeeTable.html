@@ -1,5 +1,6 @@
 <template name="coffeeTable">
   <div class="container">
+    <h1>{{getMonthYear}}</h1>
     <table class='table coffeeTable table-striped'>
       <thead>
         <tr>
@@ -13,22 +14,19 @@
       </thead>
       <tbody>
         {{#each users}}
-          {{#if isAdmin}}
-          {{else}}
           <tr>
             <td>{{profile.name}}</td>
             <td>
               <button type="button" class="btn coffeeBtn btn btn-primary" name="cappuccino"><b>Cappuccino</b></button>
               <button type="button" class="btn coffeeBtn btn btn-primary" name="espresso"><b>Espresso</b></button>
             </td>
-            <td>{{profile.cappuccino.length}}</td>
-            <td>{{profile.espresso.length}}</td>
+            <td>{{getCoffeeCount.cappuccino}}</td>
+            <td>{{getCoffeeCount.espresso}}</td>
             <td>
               <button type="button" class="btn accountBtn btn btn-success"><b>+</b></button>
             </td>
             <td>{{getAccount}} € </td>
           </tr>
-          {{/if}}
         {{/each}}
       </tbody>
     </table>
