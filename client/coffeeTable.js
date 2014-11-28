@@ -1,6 +1,10 @@
 Template.coffeeTable.helpers({
 	users: function () {
-		var users = Meteor.users.find().fetch();
+		var users = Meteor.users.find( {$where: function() { 
+			// _.where(this.profile.espresso, {author: "Shakespeare", year: 1611});
+			return true; 
+		} } ).fetch();
+
 		users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com';});
 		var sortedUsers = _.sortBy(users, function (user) {return -user.profile.espresso.length -user.profile.cappuccino.length} ) // FIXME: sort users according to current month
 		return sortedUsers;

@@ -43,7 +43,8 @@ function collectData () {
 
 function visualizeData(data) {  
 	nv.addGraph(function() {
-		var width = 600, height = 60*data.length+"px";
+		// var width = 800
+		var height = 70+ 40*data[0].values.length;
 		var chart = nv.models.multiBarHorizontalChart()
 		.x(function(d) { return d.name })
 		.y(function(d) { return d.coffee })
@@ -52,14 +53,19 @@ function visualizeData(data) {
 		.tooltips(true)             //Show tooltips on hover.
 		.transitionDuration(350)
 		.stacked(true)
-		.showControls(true);        //Allow user to switch between "Grouped" and "Stacked" mode.
+		.showControls(true)        //Allow user to switch between "Grouped" and "Stacked" mode.
+		// .width(width)
+		.height(height);
 		
 		chart.yAxis
 		.tickFormat(d3.format(',f'));
 
 		d3.select('#coffeeChart svg')
 		.datum(data)
-		.call(chart) .attr('width', width).attr('height', height);
+		.call(chart) 
+		// .attr('width', width)
+		.attr('height', height);
+		console.log(height)
 
 		nv.utils.windowResize(chart.update);
 
