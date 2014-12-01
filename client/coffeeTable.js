@@ -32,6 +32,16 @@ Template.coffeeTable.helpers({
 			account += creditArray[i];
 		};
 		return account.toFixed(2);
+	},
+	setAccountColor: function () {
+		var espressoAmount = this.profile.espresso.length * 0.3; // FIXME: get price from DB
+		var cappuccinoAmount = this.profile.cappuccino.length * 0.4; // FIXME: get price from DB
+		var creditArray = _.pluck(this.profile.account, 'amount');
+		var account = - espressoAmount - cappuccinoAmount;
+		for (var i = 0; i < creditArray.length; i++) {
+			account += creditArray[i];
+		};
+		return account >= 0 ? "black": "red";
 	}
 });
 

@@ -1,35 +1,39 @@
 <template name="coffeeTable">
-  <div class="container">
-    <h1>{{getMonthYear}}</h1>
-    <table class='table coffeeTable table-striped'>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Drink</th>
-          <th>Cappuccini</th>
-          <th>Espressi</th>
-          <th>Add Credit</th>
-          <th>Account</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each users}}
-          <tr>
-            <td>{{profile.name}}</td>
-            <td>
-              <button type="button" class="btn coffeeBtn btn btn-primary" name="cappuccino"><b>Cappuccino</b></button>
-              <button type="button" class="btn coffeeBtn btn btn-primary" name="espresso"><b>Espresso</b></button>
-            </td>
-            <td>{{getCoffeeCount.cappuccino}}</td>
-            <td>{{getCoffeeCount.espresso}}</td>
-            <td>
-              <button type="button" class="btn accountBtn btn btn-success"><b>+</b></button>
-            </td>
-            <td>{{getAccount}} € </td>
-          </tr>
-        {{/each}}
-      </tbody>
-    </table>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-lg-8 col-lg-offset-2">
+        <h1>{{getMonthYear}}</h1>
+        <table class='table coffeeTable table-striped'>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Drink</th>
+              <th>Cappuccini</th>
+              <th>Espressi</th>
+              <th>Add Credit</th>
+              <th>Account</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each users}}
+            <tr>
+              <td>{{profile.name}}</td>
+              <td>
+                <button type="button" class="btn coffeeBtn btn btn-primary" name="cappuccino"><b>Cappuccino</b></button>
+                <button type="button" class="btn coffeeBtn btn btn-primary" name="espresso"><b>Espresso</b></button>
+              </td>
+              <td>{{getCoffeeCount.cappuccino}}</td>
+              <td>{{getCoffeeCount.espresso}}</td>
+              <td>
+                <button type="button" class="btn accountBtn btn btn-success"><b>+</b></button>
+              </td>
+              <td style="color: {{setAccountColor}}">{{getAccount}} € </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
   {{> changeAccountModal}}
 </template>
