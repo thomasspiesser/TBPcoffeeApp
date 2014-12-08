@@ -6,6 +6,7 @@
         <table class='table coffeeTable table-striped'>
           <thead>
             <tr>
+              <th>Rank</th>
               <th>Name</th>
               <th>Drink</th>
               <th>Cappuccini</th>
@@ -17,6 +18,7 @@
           <tbody>
             {{#each users}}
             <tr>
+              <td>{{_index}}.</td>
               <td>{{profile.name}}</td>
               <td>
                 <button type="button" class="btn coffeeBtn btn btn-primary" name="cappuccino"><b>Cappuccino</b></button>

@@ -7,6 +7,10 @@ Template.coffeeTable.helpers({
 
 		users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com';});
 		var sortedUsers = _.sortBy(users, function (user) {return -user.profile.espresso.length -user.profile.cappuccino.length} ) // FIXME: sort users according to current month
+		sortedUsers.map(function(user, index, cursor) {
+			user._index = index+1;
+			return user;
+		})
 		return sortedUsers;
 	},
 	getMonthYear: function () {
