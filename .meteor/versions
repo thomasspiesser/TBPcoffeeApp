@@ -61,6 +61,7 @@ reactive-var@1.0.3
 reload@1.1.1
 retry@1.0.1
 routepolicy@1.0.2
+rzymek:randomcolor@0.1.1_1
 service-configuration@1.0.2
 session@1.0.4
 sha@1.0.1
