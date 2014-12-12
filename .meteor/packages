@@ -15,4 +15,5 @@ iron:router
 pfafman:nvd3
 d3
 rzymek:randomcolor
+manuelschoebel:wait-on-lib
 
