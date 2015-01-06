@@ -1,11 +1,13 @@
-Template.coffeeTable.rendered = function () {
-	$.fn.snow({
-		minSize: 5, // Minimumsize of the snowflake (px)
-		maxSize: 35, // Maximum size of the snowflake (px)
-		newOn: 250, // Frequency they fall (ms)
-		flakeColor: '#000' // Colour of the snowflake
-	});
-};
+var _ = lodash;
+
+// Template.coffeeTable.rendered = function () {
+// 	$.fn.snow({
+// 		minSize: 5, // Minimumsize of the snowflake (px)
+// 		maxSize: 35, // Maximum size of the snowflake (px)
+// 		newOn: 250, // Frequency they fall (ms)
+// 		flakeColor: '#000' // Colour of the snowflake
+// 	});
+// };
 
 Template.coffeeTable.helpers({
 	users: function () {
