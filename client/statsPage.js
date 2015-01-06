@@ -1,3 +1,5 @@
+var _ = lodash;
+
 Template.diagram.rendered = function () {
 	var data = collectBarData();
   plotStackedMultibar(data); 
@@ -98,9 +100,8 @@ function getCountsPerDay (arr) {
 
 function plotStackedMultibar(data) {  
 	nv.addGraph(function() {
-		// var width = 800
-		var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    // width = 960 - margin.left - margin.right,
+		var margin = {top: 20, right: 50, bottom: 30, left: 100},
+    width = $(window).width() - margin.left - margin.right,
     height = 40*data[0].values.length + margin.top + margin.bottom;
 		
 		var chart = nv.models.multiBarHorizontalChart()
@@ -109,18 +110,19 @@ function plotStackedMultibar(data) {
 		.margin(margin)
 		.showValues(true)           //Show bar value next to each bar.
 		.tooltips(true)             //Show tooltips on hover.
-		.transitionDuration(350)
 		.stacked(true)
 		.showControls(true)        //Allow user to switch between "Grouped" and "Stacked" mode.
-		// .width(width)
+		.width(width)
 		.height(height);
 		
 		chart.yAxis
 		.tickFormat(d3.format(',f'));
 
 		d3.select('#coffeeChart svg')
-		.datum(data)
+		.datum(data)		
+		.transition().duration(500)
 		.attr('height', height + margin.top + margin.bottom)
+		.attr('width', width)
 		.call(chart); 
 
 		nv.utils.windowResize(chart.update);
@@ -132,27 +134,29 @@ function plotStackedMultibar(data) {
 function plotLines(data) {  
 	nv.addGraph(function() {
 		var margin = {top: 20, right: 50, bottom: 30, left: 50},
-    // width = 960 - margin.left - margin.right,
+    width = $(window).width() - margin.left - margin.right,
     height = 600 - margin.left - margin.right;
 
 	  var chart = nv.models.lineChart()
-	  // .useInteractiveGuideline(true)
-		.margin(margin)
-		.height(height);
+	  	// .useInteractiveGuideline(true)
+			.margin(margin)
+			.height(height)
+			.width(width);
 
-  chart.xAxis
-    .tickFormat(function(d) {
-      return d3.time.format("%d.%m.%y")(new Date(d))
-    });
+  	chart.xAxis
+    	.tickFormat(function(d) {
+      	return d3.time.format("%d.%m.%y")(new Date(d))
+    	});
 
 	  chart.yAxis
-	      .tickFormat(d3.format('d'));
+	    .tickFormat(d3.format('d'));
 
 	  d3.select('#coffeeChart2 svg')
-	      .datum(data)
-	      .transition().duration(500)
-    		.attr('height', height)
-	      .call(chart);
+      .datum(data)
+      .transition().duration(500)
+  		.attr('width', width)
+  		.attr('height', height)
+      .call(chart);
 
 	  nv.utils.windowResize(chart.update);
 
