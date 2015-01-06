@@ -10,6 +10,7 @@ blaze-tools@1.0.2
 boilerplate-generator@1.0.2
 callback-hook@1.0.2
 check@1.0.3
+clinical:nvd3@0.0.3
 coffeescript@1.0.5
 d3@1.0.0
 d3js:d3@3.4.13
@@ -55,7 +56,6 @@ mrt:accounts-ui-bootstrap-3@0.3.3
 npm-bcrypt@0.7.7
 observe-sequence@1.0.4
 ordered-dict@1.0.2
-pfafman:nvd3@1.7.0_3
 random@1.0.2
 reactive-dict@1.0.5
 reactive-var@1.0.4

@@ -100,7 +100,7 @@ function getCountsPerDay (arr) {
 
 function plotStackedMultibar(data) {  
 	nv.addGraph(function() {
-		var margin = {top: 20, right: 50, bottom: 30, left: 100},
+		var margin = {top: 20, right: 30, bottom: 30, left: 130},
     width = $(window).width() - margin.left - margin.right,
     height = 40*data[0].values.length + margin.top + margin.bottom;
 		

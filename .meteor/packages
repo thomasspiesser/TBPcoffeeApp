@@ -12,8 +12,8 @@ mrt:accounts-ui-bootstrap-3
 gfk:notifications
 mizzao:bootboxjs
 iron:router
-pfafman:nvd3
 d3
 rzymek:randomcolor
 manuelschoebel:wait-on-lib
 stevezhu:lodash
+clinical:nvd3
