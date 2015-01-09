@@ -48,7 +48,6 @@ function collectBarData () {
 	return coffeeData;
 };
 
-
 function collectLineData () {
 	var users = Meteor.users.find().fetch();
 	users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com'; });
@@ -73,7 +72,6 @@ function collectLineData () {
 	return coffeeCounts;
 };
 
-
 function getCountsPerDay (arr) {
 	var results = {}, rarr = [], i;
 
@@ -97,12 +95,11 @@ function getCountsPerDay (arr) {
 	return rarr;
 };
 
-
 function plotStackedMultibar(data) {  
 	nv.addGraph(function() {
-		var margin = {top: 20, right: 30, bottom: 30, left: 130},
-    width = $(window).width() - margin.left - margin.right,
-    height = 40*data[0].values.length + margin.top + margin.bottom;
+		var margin = {top: 30, right: 0, bottom: 30, left: 150},
+    width = $(window).width() -margin.left -margin.right,
+    height = 40*data[0].values.length;
 		
 		var chart = nv.models.multiBarHorizontalChart()
 		.x(function(d) { return d.name })
@@ -133,9 +130,9 @@ function plotStackedMultibar(data) {
 
 function plotLines(data) {  
 	nv.addGraph(function() {
-		var margin = {top: 50, right: 70, bottom: 50, left: 50},
-    	width = $(window).width() - margin.left - margin.right;
-    	height = $(window).height() - margin.top - margin.bottom;
+		var margin = {top: 30, right: 30, bottom: 50, left: 50},
+    	width = $(window).width() -margin.left -margin.right;
+    	height = $(window).height() -margin.top -margin.bottom;
 
 	  var chart = nv.models.lineChart()
 	  	// .useInteractiveGuideline(true)
