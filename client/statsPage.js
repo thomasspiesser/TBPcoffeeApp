@@ -121,7 +121,7 @@ function plotStackedMultibar(data) {
 		d3.select('#coffeeChart svg')
 		.datum(data)		
 		.transition().duration(500)
-		.attr('height', height + margin.top + margin.bottom)
+		.attr('height', height)
 		.attr('width', width)
 		.call(chart); 
 
@@ -133,9 +133,9 @@ function plotStackedMultibar(data) {
 
 function plotLines(data) {  
 	nv.addGraph(function() {
-		var margin = {top: 20, right: 50, bottom: 30, left: 50},
-    width = $(window).width() - margin.left - margin.right,
-    height = 600 - margin.left - margin.right;
+		var margin = {top: 50, right: 70, bottom: 50, left: 50},
+    	width = $(window).width() - margin.left - margin.right;
+    	height = $(window).height() - margin.top - margin.bottom;
 
 	  var chart = nv.models.lineChart()
 	  	// .useInteractiveGuideline(true)
@@ -154,8 +154,8 @@ function plotLines(data) {
 	  d3.select('#coffeeChart2 svg')
       .datum(data)
       .transition().duration(500)
-  		.attr('width', width)
-  		.attr('height', height)
+  	  .attr('width', width)
+  	  .attr('height', height)
       .call(chart);
 
 	  nv.utils.windowResize(chart.update);
