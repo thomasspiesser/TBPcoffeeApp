@@ -19,8 +19,8 @@ Template.coffeeTable.helpers({
 		users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com';});
 		var currentMonth = new Date().getMonth();
 		var sortedUsers = _.sortBy(users, function (user) {
-			return -_.filter(user.profile.espresso, function(date){return date.getMonth() === currentMonth}).length 
-			-_.filter(user.profile.cappuccino, function(date){return date.getMonth() === currentMonth}).length
+			return -(_.filter(user.profile.espresso, function(date){return date.getMonth() === currentMonth}).length 
+			+_.filter(user.profile.cappuccino, function(date){return date.getMonth() === currentMonth}).length)
 		});
 		// var sortedUsers = _.sortBy(users, function (user) { return -user.profile.espresso.length -user.profile.cappuccino.length }) // FIXME: sort users according to current month
 		sortedUsers.map(function(user, index, cursor) {
