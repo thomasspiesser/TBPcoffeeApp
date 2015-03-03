@@ -61,7 +61,17 @@ function collectBarDataMonth () {
 		coffee = coffee.concat(user.profile.espresso);
 		coffee = coffee.concat(user.profile.cappuccino);
 	};
+
+	var years = [];
+	var month = [];
+	for (var i in coffee) {
+		years.push(coffee[i].getFullYear())
+		month.push(coffee[i].getMonth())
+	}
+	years = _.uniq(years)
+	month = _.uniq(month)
 	
+
 	var years = {};
 	var count = 0;
 	// find years 
@@ -81,7 +91,7 @@ function collectBarDataMonth () {
 			years[yearArray[i]] = month
 		};
 	};
-
+	
 	var coffeeData = [];
 	var colors = randomColor({hue: 'blue', count: count});
 	
