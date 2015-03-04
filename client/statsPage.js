@@ -14,11 +14,15 @@ function collectBarDataMonth () {
 	var monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
 	// collect all coffee dates in one array
-	var coffee = []
+	var coffee = [];
+	var consumers = [];
 	for (var i = 0; i < sortedUsers.length; i++) {
 		var user = sortedUsers[i];	
 		coffee = coffee.concat(user.profile.espresso);
 		coffee = coffee.concat(user.profile.cappuccino);
+		if (user.profile.espresso.length > 0 | user.profile.cappuccino.length > 0) {
+			consumers.push(user);
+		}
 	};
 
 	// find all year month combinations where data exists
@@ -37,10 +41,10 @@ function collectBarDataMonth () {
 	var count = 0;
 	for (var y in yearMonth) {
 		yearMonth[y] = _.uniq(yearMonth[y])
-		count = count + yearMonth[y].length;
+		count += yearMonth[y].length;
 	}
 
-	// collect the data in the rigth format for a nvd3 multibar stacked plot
+	// collect the data in the right format for a nvd3 multibar stacked plot
 	var coffeeData = [];
 	var colors = randomColor({hue: 'blue', count: count});
 	
@@ -60,9 +64,9 @@ function collectBarDataMonth () {
 		};
 	};
 
-	// iterate over all users
-	for (var i = 0; i < sortedUsers.length; i++) {
-		var user = sortedUsers[i];
+	// iterate over all consumers
+	for (var i = 0; i < consumers.length; i++) {
+		var user = consumers[i];
 		var l = 0;
 		for (var year in yearMonth) {
 			if (yearMonth.hasOwnProperty(year)) {
