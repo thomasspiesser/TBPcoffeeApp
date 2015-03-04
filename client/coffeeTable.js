@@ -1,13 +1,15 @@
 var _ = lodash;
 
-// Template.coffeeTable.rendered = function () {
-// 	$.fn.snow({
-// 		minSize: 5, // Minimumsize of the snowflake (px)
-// 		maxSize: 35, // Maximum size of the snowflake (px)
-// 		newOn: 250, // Frequency they fall (ms)
-// 		flakeColor: '#000' // Colour of the snowflake
-// 	});
-// };
+/*
+Template.coffeeTable.rendered = function () {
+	$.fn.snow({
+		minSize: 5, // Minimumsize of the snowflake (px)
+		maxSize: 35, // Maximum size of the snowflake (px)
+		newOn: 250, // Frequency they fall (ms)
+		flakeColor: '#000' // Colour of the snowflake
+	});
+}
+*/
 
 Template.coffeeTable.helpers({
 	users: function () {
@@ -22,7 +24,6 @@ Template.coffeeTable.helpers({
 			return -(_.filter(user.profile.espresso, function(date){return date.getMonth() === currentMonth}).length 
 			+_.filter(user.profile.cappuccino, function(date){return date.getMonth() === currentMonth}).length)
 		});
-		// var sortedUsers = _.sortBy(users, function (user) { return -user.profile.espresso.length -user.profile.cappuccino.length }) // FIXME: sort users according to current month
 		sortedUsers.map(function(user, index, cursor) {
 			user._index = index+1;
 			return user;
@@ -41,7 +42,7 @@ Template.coffeeTable.helpers({
 		var currentMonth = new Date().getMonth();
 		var espressoCount = _.filter(this.profile.espresso, function(date){ return date.getMonth() == currentMonth; }).length;
 		var cappuccinoCount = _.filter(this.profile.cappuccino, function(date){ return date.getMonth() == currentMonth; }).length;
-		return {espresso:espressoCount, cappuccino:cappuccinoCount};
+		return {espresso:espressoCount, cappuccino:cappuccinoCount}
 	},
 	getAccount: function () {
 		var espressoAmount = this.profile.espresso.length * 0.3; // FIXME: get price from DB
@@ -50,7 +51,7 @@ Template.coffeeTable.helpers({
 		var account = - espressoAmount - cappuccinoAmount;
 		for (var i = 0; i < creditArray.length; i++) {
 			account += creditArray[i];
-		};
+		}
 		return account.toFixed(2);
 	},
 	setAccountColor: function () {
@@ -60,7 +61,7 @@ Template.coffeeTable.helpers({
 		var account = - espressoAmount - cappuccinoAmount;
 		for (var i = 0; i < creditArray.length; i++) {
 			account += creditArray[i];
-		};
+		}
 		return account >= 0 ? "black": "red";
 	}
 });
