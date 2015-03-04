@@ -2,15 +2,14 @@ var _ = lodash;
 
 Template.diagram.rendered = function () {
 	var data = collectBarDataMonth();
-  plotStackedMultibar(data); 
-};
+	plotStackedMultibar(data); 
+}
 
 function collectBarDataMonth () {
-	
+
 	var users = Meteor.users.find().fetch();
 	users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com'; });
 	var sortedUsers = _.sortBy(users, function (user) {return -user.profile.espresso.length -user.profile.cappuccino.length} )
-
 	var monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
 	// collect all coffee dates in one array
@@ -23,7 +22,7 @@ function collectBarDataMonth () {
 		if (user.profile.espresso.length > 0 | user.profile.cappuccino.length > 0) {
 			consumers.push(user);
 		}
-	};
+	}
 
 	// find all year month combinations where data exists
 	var yearMonth = {};
@@ -61,8 +60,8 @@ function collectBarDataMonth () {
 				}
 				l++;
 			}
-		};
-	};
+		}
+	}
 
 	// iterate over all consumers
 	for (var i = 0; i < consumers.length; i++) {
@@ -77,28 +76,28 @@ function collectBarDataMonth () {
 					var userData = {
 						name: user.profile.name,
 						coffee: coffee
-					};
+					}
 					coffeeData[l].values.push(userData);
 					l++;
 				}
-			};
+			}
 		}
-	};
+	}
 
 	return coffeeData;
-};
+}
 
 function plotStackedMultibar(data) {  
 	if (data.length > 0){
 		nv.addGraph(function() {
 			var margin = {top: 30, right: 0, bottom: 30, left: 150},
-		    width = $(window).width() -margin.left -margin.right,
+			width = $(window).width() -margin.left -margin.right,
 		    height = 40*data[0].values.length;// -margin.top -margin.bottom;
-			
-			var chart = nv.models.multiBarHorizontalChart()
-			.x(function(d) { return d.name })
-			.y(function(d) { return d.coffee })
-			.margin(margin)
+
+		    var chart = nv.models.multiBarHorizontalChart()
+		    .x(function(d) { return d.name })
+		    .y(function(d) { return d.coffee })
+		    .margin(margin)
 			.showValues(true)           //Show bar value next to each bar.
 			.tooltips(true)             //Show tooltips on hover.
 			.stacked(true)
@@ -120,5 +119,5 @@ function plotStackedMultibar(data) {
 
 			return chart;
 		});
-	};
-};
+	}
+}
