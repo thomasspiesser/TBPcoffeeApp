@@ -25,7 +25,7 @@ Template.adminCreateUser.events({
 		};
 		Meteor.call('createConsumer', options, function (error, result) {
 			if (error){
-				Notifications.error(error.reason, error.detail, {timeout: 5000});
+				alert(error.reason + '\n' + error.detail);
 			} else {
 				console.log(result);
 			}

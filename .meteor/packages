@@ -4,16 +4,14 @@
 # but you can also edit it by hand.
 
 meteor-platform
-mizzao:bootstrap-3
 accounts-password
 alanning:roles
-mrt:accounts-admin-ui-bootstrap-3
-mrt:accounts-ui-bootstrap-3
-gfk:notifications
 mizzao:bootboxjs
 iron:router
-d3
 rzymek:randomcolor
-manuelschoebel:wait-on-lib
 stevezhu:lodash
 clinical:nvd3
+ian:accounts-ui-bootstrap-3
+twbs:bootstrap
+mrt:accounts-admin-ui-bootstrap-3
+d3

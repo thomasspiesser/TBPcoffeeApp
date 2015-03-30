@@ -1,4 +1,5 @@
 var _ = lodash;
+var colors = randomColor({hue: 'blue', count: 100});
 
 Template.diagram.rendered = function () {
 	var data = collectBarDataMonth();
@@ -45,7 +46,6 @@ function collectBarDataMonth () {
 
 	// collect the data in the right format for a nvd3 multibar stacked plot
 	var coffeeData = [];
-	var colors = randomColor({hue: 'blue', count: count});
 	
 	// iterate over all years and month
 	var l = 0;
