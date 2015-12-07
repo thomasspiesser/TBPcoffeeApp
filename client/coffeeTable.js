@@ -20,9 +20,10 @@ Template.coffeeTable.helpers({
 
 		users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com';});
 		var currentMonth = new Date().getMonth();
+		var currentYear = new Date().getFullYear();
 		var sortedUsers = _.sortBy(users, function (user) {
-			return -(_.filter(user.profile.espresso, function(date){return date.getMonth() === currentMonth}).length 
-			+_.filter(user.profile.cappuccino, function(date){return date.getMonth() === currentMonth}).length)
+			return -(_.filter(user.profile.espresso, function(date){return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear)}).length 
+			+_.filter(user.profile.cappuccino, function(date){return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear)}).length)
 		});
 		sortedUsers.map(function(user, index, cursor) {
 			user._index = index+1;
@@ -40,8 +41,9 @@ Template.coffeeTable.helpers({
 	},
 	getCoffeeCount: function () {
 		var currentMonth = new Date().getMonth();
-		var espressoCount = _.filter(this.profile.espresso, function(date){ return date.getMonth() == currentMonth; }).length;
-		var cappuccinoCount = _.filter(this.profile.cappuccino, function(date){ return date.getMonth() == currentMonth; }).length;
+		var currentYear = new Date().getFullYear();
+		var espressoCount = _.filter(this.profile.espresso, function(date){ return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear); }).length;
+		var cappuccinoCount = _.filter(this.profile.cappuccino, function(date){ return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear); }).length;
 		return {espresso:espressoCount, cappuccino:cappuccinoCount}
 	},
 	getAccount: function () {
