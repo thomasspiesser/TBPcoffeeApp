@@ -65,6 +65,19 @@ Template.coffeeTable.helpers({
 			account += creditArray[i];
 		}
 		return account >= 0 ? "black": "red";
+	},
+	getTotalCount: function () {
+		var users = Meteor.users.find( {$where: function() { 
+			return true;
+		} } ).fetch();
+		users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com';});
+
+		var totalCount = 0;
+		for(var i = 0; i < users.length; i++) {
+			var user = users[i];
+			totalCount = totalCount + user.profile.espresso.length + user.profile.cappuccino.length;
+		}
+		return totalCount;
 	}
 });
 
