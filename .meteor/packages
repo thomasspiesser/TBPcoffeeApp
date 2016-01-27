@@ -3,27 +3,15 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
+meteor-platform
 accounts-password
 alanning:roles
 mizzao:bootboxjs
 iron:router
 rzymek:randomcolor
+stevezhu:lodash
+clinical:nvd3
 ian:accounts-ui-bootstrap-3
 twbs:bootstrap
 mrt:accounts-admin-ui-bootstrap-3
-standard-minifiers
-meteor-base
-mobile-experience
-mongo
-blaze-html-templates
-session
-jquery
-tracker
-logging
-reload
-random
-ejson
-spacebars
-check
-nvd3:nvd3
-erasaur:meteor-lodash
+d3

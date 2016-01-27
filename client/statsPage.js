@@ -94,16 +94,16 @@ function plotStackedMultibar(data) {
 			width = $(window).width() -margin.left -margin.right,
 		    height = 40*data[0].values.length;// -margin.top -margin.bottom;
 
-			var chart = nv.models.multiBarHorizontalChart()
+		    var chart = nv.models.multiBarHorizontalChart()
 		    .x(function(d) { return d.name })
 		    .y(function(d) { return d.coffee })
 		    .margin(margin)
 			.showValues(true)           //Show bar value next to each bar.
+			.tooltips(true)             //Show tooltips on hover.
 			.stacked(true)
-			.showControls(false)        //Allow user to switch between "Grouped" and "Stacked" mode.
+			.showControls(true)        //Allow user to switch between "Grouped" and "Stacked" mode.
 			.width(width)
 			.height(height);
-			// .tooltips(true)             //Show tooltips on hover.
 			
 			chart.yAxis
 			.tickFormat(d3.format(',f'));
