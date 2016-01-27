@@ -99,9 +99,8 @@ function plotStackedMultibar(data) {
 		    .y(function(d) { return d.coffee })
 		    .margin(margin)
 			.showValues(true)           //Show bar value next to each bar.
-			.tooltips(true)             //Show tooltips on hover.
 			.stacked(true)
-			.showControls(true)        //Allow user to switch between "Grouped" and "Stacked" mode.
+			.showControls(false)        //Allow user to switch between "Grouped" and "Stacked" mode.
 			.width(width)
 			.height(height);
 			
