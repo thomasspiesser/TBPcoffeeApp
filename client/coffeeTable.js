@@ -13,17 +13,13 @@ Template.coffeeTable.rendered = function () {
 
 Template.coffeeTable.helpers({
 	users: function () {
-		var users = Meteor.users.find( {$where: function() { 
-			// _.where(this.profile.espresso, {author: "Shakespeare", year: 1611});
-			return true; 
-		} } ).fetch();
-
+		var users = Meteor.users.find( {$where: function() { return true; } } ).fetch();
 		users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com';});
 		var currentMonth = new Date().getMonth();
 		var currentYear = new Date().getFullYear();
 		var sortedUsers = _.sortBy(users, function (user) {
 			return -(_.filter(user.profile.espresso, function(date){return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear)}).length 
-			+_.filter(user.profile.cappuccino, function(date){return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear)}).length)
+				+_.filter(user.profile.cappuccino, function(date){return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear)}).length)
 		});
 		sortedUsers.map(function(user, index, cursor) {
 			user._index = index+1;
@@ -67,9 +63,7 @@ Template.coffeeTable.helpers({
 		return account >= 0 ? "black": "red";
 	},
 	getTotalCount: function () {
-		var users = Meteor.users.find( {$where: function() { 
-			return true;
-		} } ).fetch();
+		var users = Meteor.users.find( {$where: function() { return true; } } ).fetch();
 		users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com';});
 		var totalCount = 0;
 		for(var i = 0; i < users.length; i++) {
@@ -77,6 +71,18 @@ Template.coffeeTable.helpers({
 			totalCount = totalCount + user.profile.espresso.length + user.profile.cappuccino.length;
 		}
 		return totalCount;
+	},
+	getMonthlyCount: function () {
+		var currentMonth = new Date().getMonth();
+		var currentYear = new Date().getFullYear();
+		var users = Meteor.users.find( {$where: function() { return true;} } ).fetch();
+		users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com';});
+		var monthlyCount = 0;
+		for(var i = 0; i < users.length; i++) {
+			var user = users[i];
+			monthlyCount += _.filter(user.profile.espresso, function(date){ return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear); }).length + _.filter(user.profile.cappuccino, function(date){ return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear); }).length;
+		}
+		return monthlyCount;
 	}
 });
 
