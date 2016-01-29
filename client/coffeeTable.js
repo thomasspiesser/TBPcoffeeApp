@@ -80,9 +80,29 @@ Template.coffeeTable.helpers({
 		var monthlyCount = 0;
 		for(var i = 0; i < users.length; i++) {
 			var user = users[i];
-			monthlyCount += _.filter(user.profile.espresso, function(date){ return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear); }).length + _.filter(user.profile.cappuccino, function(date){ return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear); }).length;
+            monthlyCount += _.filter(user.profile.espresso, function(date){ return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear); }).length + _.filter(user.profile.cappuccino, function(date){ return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear); }).length;
 		}
 		return monthlyCount;
+	},
+	getAchievements: function() {
+		var achievements = "";
+        var coffee_today = _.filter(this.profile.espresso,
+                function(date){
+                    return (date.getDate() == new Date().getDate()); }).length +
+            _.filter(this.profile.cappuccino,
+                function(date){
+                    return (date.getDate() == new Date().getDate()); }).length;
+		var user_total = this.profile.espresso.length + this.profile.cappuccino.length;
+        if(user_total < 10) achievements += ":baby_tone1:";
+		if(user_total >= 1000) {
+			achievements += ":trophy:"
+		};
+        if(coffee_today > 0) {
+            achievements += ":coffee:";
+        };
+
+		console.log(achievements);
+		return achievements;
 	}
 });
 
@@ -106,3 +126,8 @@ Template.coffeeTable.events({
 		Session.set("changeAccountUser", this._id);
 	}
 });
+
+getUsers = function () {
+	var users = Meteor.users.find( {$where: function() { return true;} } ).fetch();
+	return _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com';});
+};

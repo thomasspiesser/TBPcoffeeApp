@@ -27,6 +27,7 @@ ecmascript@0.1.6
 ecmascript-runtime@0.2.6
 ejson@1.0.7
 email@1.0.8
+emojione:emojione@2.0.1
 fastclick@1.0.7
 geojson-utils@1.0.4
 hot-code-push@1.0.0

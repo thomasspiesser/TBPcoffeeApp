@@ -21,7 +21,7 @@
             {{#each users}}
             <tr>
               <td>{{_index}}.</td>
-              <td>{{profile.name}}</td>
+              <td>{{#emojione}}{{getAchievements}}{{/emojione}}{{profile.name}}</td>
               <td>
                 <button type="button" class="btn coffeeBtn btn btn-primary" name="cappuccino">Cappuccino</button>
                 <button type="button" class="btn coffeeBtn btn btn-primary" name="espresso">Espresso</button>
