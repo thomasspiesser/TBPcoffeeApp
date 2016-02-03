@@ -1,4 +1,4 @@
-var _ = lodash;
+// var _ = lodash;
 var colors = randomColor({hue: 'blue', count: 100});
 
 Template.diagram.rendered = function () {
@@ -7,9 +7,7 @@ Template.diagram.rendered = function () {
 }
 
 function collectBarDataMonth () {
-
-	var users = Meteor.users.find().fetch();
-	users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com'; });
+	var users = getUsers();
 	var sortedUsers = _.sortBy(users, function (user) {return -user.profile.espresso.length -user.profile.cappuccino.length} )
 	var monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
@@ -83,7 +81,6 @@ function collectBarDataMonth () {
 			}
 		}
 	}
-
 	return coffeeData;
 }
 
@@ -115,7 +112,6 @@ function plotStackedMultibar(data) {
 			.call(chart); 
 
 			nv.utils.windowResize(chart.update);
-
 			return chart;
 		});
 	}

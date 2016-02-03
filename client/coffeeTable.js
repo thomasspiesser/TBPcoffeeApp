@@ -13,13 +13,10 @@ Template.coffeeTable.rendered = function () {
 
 Template.coffeeTable.helpers({
 	users: function () {
-		var users = Meteor.users.find( {$where: function() { return true; } } ).fetch();
-		users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com';});
-		var currentMonth = new Date().getMonth();
-		var currentYear = new Date().getFullYear();
+		var users = getUsers();
 		var sortedUsers = _.sortBy(users, function (user) {
-			return -(_.filter(user.profile.espresso, function(date){return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear)}).length 
-				+_.filter(user.profile.cappuccino, function(date){return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear)}).length)
+			return -(_.filter(user.profile.espresso, function(date){return (date.getMonth() == new Date().getMonth()) && (date.getFullYear() == new Date().getFullYear())}).length 
+				+_.filter(user.profile.cappuccino, function(date){return (date.getMonth() == new Date().getMonth()) && (date.getFullYear() == new Date().getFullYear())}).length)
 		});
 		sortedUsers.map(function(user, index, cursor) {
 			user._index = index+1;
@@ -28,18 +25,12 @@ Template.coffeeTable.helpers({
 		return sortedUsers;
 	},
 	getMonthYear: function () {
-		var currentMonth = new Date().getMonth();
-		var currentYear = new Date().getFullYear();
-		var monthArray=new Array("January","February","March",
-			"April","May","June","July","August","September",
-			"October","November","December");
-		return monthArray[currentMonth]+" "+currentYear;
+		var monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+		return monthNames[new Date().getMonth()]+" "+new Date().getFullYear();
 	},
 	getCoffeeCount: function () {
-		var currentMonth = new Date().getMonth();
-		var currentYear = new Date().getFullYear();
-		var espressoCount = _.filter(this.profile.espresso, function(date){ return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear); }).length;
-		var cappuccinoCount = _.filter(this.profile.cappuccino, function(date){ return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear); }).length;
+		var espressoCount = _.filter(this.profile.espresso, function(date){ return (date.getMonth() == new Date().getMonth()) && (date.getFullYear() == new Date().getFullYear()); }).length;
+		var cappuccinoCount = _.filter(this.profile.cappuccino, function(date){ return (date.getMonth() == new Date().getMonth()) && (date.getFullYear() == new Date().getFullYear()); }).length;
 		return {espresso:espressoCount, cappuccino:cappuccinoCount}
 	},
 	getAccount: function () {
@@ -63,29 +54,23 @@ Template.coffeeTable.helpers({
 		return account >= 0 ? "black": "red";
 	},
 	getTotalCount: function () {
-		var users = Meteor.users.find( {$where: function() { return true; } } ).fetch();
-		users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com';});
+		var users = getUsers();
 		var totalCount = 0;
 		for(var i = 0; i < users.length; i++) {
-			var user = users[i];
-			totalCount = totalCount + user.profile.espresso.length + user.profile.cappuccino.length;
+			totalCount = totalCount + users[i].profile.espresso.length + users[i].profile.cappuccino.length;
 		}
 		return totalCount;
 	},
 	getMonthlyCount: function () {
-		var currentMonth = new Date().getMonth();
-		var currentYear = new Date().getFullYear();
-		var users = Meteor.users.find( {$where: function() { return true;} } ).fetch();
-		users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com';});
+		var users = getUsers();
 		var monthlyCount = 0;
 		for(var i = 0; i < users.length; i++) {
-			var user = users[i];
-            monthlyCount += _.filter(user.profile.espresso,
+            monthlyCount += _.filter(users[i].profile.espresso,
 					function(date){
-						return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear);
+						return (date.getMonth() == new Date().getMonth()) && (date.getFullYear() == new Date().getFullYear());
 					}).length
-				+ _.filter(user.profile.cappuccino, function(date){
-					return (date.getMonth() == currentMonth) && (date.getFullYear() == currentYear); }).length;
+				+ _.filter(users[i].profile.cappuccino, function(date){
+					return (date.getMonth() == new Date().getMonth()) && (date.getFullYear() == new Date().getFullYear()); }).length;
 		}
 		return monthlyCount;
 	},
@@ -105,8 +90,6 @@ Template.coffeeTable.helpers({
         if(coffee_today > 0) {
             achievements += ":coffee:";
         };
-
-		console.log(achievements);
 		return achievements;
 	}
 });
