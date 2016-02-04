@@ -78,10 +78,14 @@ Template.coffeeTable.helpers({
 		var achievements = "";
         var coffee_today = _.filter(this.profile.espresso,
                 function(date){
-                    return (date.getDate() == new Date().getDate() && date.getYear() == new Date().getYear()); }).length +
+                    return (date.getDate() == new Date().getDate() &&
+					date.getYear() == new Date().getYear() &&
+						date.getMonth() == new Date().getMonth()); }).length +
             _.filter(this.profile.cappuccino,
                 function(date){
-                    return (date.getDate() == new Date().getDate()) && date.getYear() == new Date().getYear(); }).length;
+                    return (date.getDate() == new Date().getDate()) &&
+						date.getYear() == new Date().getYear() &&
+						date.getMonth() == new Date().getMonth(); }).length;
 		var user_total = this.profile.espresso.length + this.profile.cappuccino.length;
         if(user_total < 10) achievements += ":baby_tone1:";
 		if(user_total >= 1000) {
