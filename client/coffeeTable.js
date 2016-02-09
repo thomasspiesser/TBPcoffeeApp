@@ -75,6 +75,7 @@ Template.coffeeTable.helpers({
 		return monthlyCount;
 	},
 	getAchievements: function() {
+		// Emojis from http://emojione.com/demo/
 		var achievements = "";
         var coffee_today = _.filter(this.profile.espresso,
                 function(date){
@@ -87,13 +88,14 @@ Template.coffeeTable.helpers({
 						date.getYear() == new Date().getYear() &&
 						date.getMonth() == new Date().getMonth(); }).length;
 		var user_total = this.profile.espresso.length + this.profile.cappuccino.length;
+
+		if(user_total >= 1000) achievements += ":trophy:"
+        if(user_total >= 500) achievements += ":medal:";
+        if(user_total >= 250) achievements += ":military_medal:";
+        if(user_total >= 100) achievements += ":star:";
         if(user_total < 10) achievements += ":baby_tone1:";
-		if(user_total >= 1000) {
-			achievements += ":trophy:"
-		};
-        if(coffee_today > 0) {
-            achievements += ":coffee:";
-        };
+        if(coffee_today > 0) achievements += ":coffee:";
+
 		return achievements;
 	}
 });
