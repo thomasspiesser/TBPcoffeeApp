@@ -61,6 +61,9 @@ Template.coffeeTable.helpers({
 		}
 		return totalCount;
 	},
+	getUserCount: function () {
+		return this.profile.espresso.length + this.profile.cappuccino.length;
+	},
 	getMonthlyCount: function () {
 		var users = getUsers();
 		var monthlyCount = 0;
