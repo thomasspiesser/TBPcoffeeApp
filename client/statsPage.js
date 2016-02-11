@@ -89,7 +89,7 @@ function plotStackedMultibar(data) {
 		nv.addGraph(function() {
 			var margin = {top: 30, right: 0, bottom: 30, left: 150},
 			width = $(window).width() -margin.left -margin.right,
-		    height = 40*data[0].values.length;// -margin.top -margin.bottom;
+		    height = 50*data[0].values.length -100;
 
 		    var chart = nv.models.multiBarHorizontalChart()
 		    .x(function(d) { return d.name })
