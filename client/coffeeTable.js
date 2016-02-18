@@ -92,12 +92,23 @@ Template.coffeeTable.helpers({
 						date.getMonth() == new Date().getMonth(); }).length;
 		var user_total = this.profile.espresso.length + this.profile.cappuccino.length;
 
+		var espressoAmount = this.profile.espresso.length * 0.3; // FIXME: get price from DB
+		var cappuccinoAmount = this.profile.cappuccino.length * 0.4; // FIXME: get price from DB
+		var creditArray = _.mapValues(this.profile.account, 'amount');
+		var user_account = - espressoAmount - cappuccinoAmount;
+		for (var i = 0; i < _.size(creditArray); i++) {
+			user_account += creditArray[i];
+		}
+		user_account = 	user_account.toFixed(2)
+
 		if(user_total >= 1000) achievements += ":trophy:"
         if(user_total >= 500) achievements += ":medal:";
         if(user_total >= 250) achievements += ":military_medal:";
         if(user_total >= 100) achievements += ":star:";
         if(user_total < 10) achievements += ":baby_tone1:";
         if(coffee_today > 0) achievements += ":coffee:";
+        
+        if(user_account < -10) achievements = ":money_mouth:";
 
 		return achievements;
 	}
