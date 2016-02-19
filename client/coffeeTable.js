@@ -102,13 +102,13 @@ Template.coffeeTable.helpers({
 		user_account = 	user_account.toFixed(2)
 
 		if(user_total >= 1000) achievements += ":trophy:"
-        if(user_total >= 500) achievements += ":medal:";
-        if(user_total >= 250) achievements += ":military_medal:";
-        if(user_total >= 100) achievements += ":star:";
-        if(user_total < 10) achievements += ":baby_tone1:";
-        if(coffee_today > 0) achievements += ":coffee:";
-        
-        if(user_account < -10) achievements = ":money_mouth:";
+	        if(user_total >= 500) achievements += ":medal:";
+	        if(user_total >= 250) achievements += ":military_medal:";
+	        if(user_total >= 100) achievements += ":star:";
+	        if(user_total < 10) achievements += ":baby_tone1:";
+	        
+	        if(user_account < -10) achievements = ":money_mouth:";
+	        if(coffee_today > 0) achievements += ":coffee:";
 
 		return achievements;
 	}
