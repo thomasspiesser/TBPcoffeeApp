@@ -79,7 +79,8 @@ Template.coffeeTable.helpers({
 	},
 	getAchievements: function() {
 		// Emojis from http://emojione.com/demo/
-		var achievements = "";
+        var date = Session.get("today");
+        var achievements = "";
         var coffee_today = _.filter(this.profile.espresso,
                 function(date){
                     return (date.getDate() == new Date().getDate() &&
@@ -113,6 +114,13 @@ Template.coffeeTable.helpers({
 		return achievements;
 	}
 });
+
+// update achievements every 6h so the coffee cup is removed every morning.
+Session.setDefault("today", new Date());
+Meteor.setInterval(function (){
+	var date = new Date();
+	Session.set("today", date.getMilliseconds());
+}, 3600000);
 
 Template.coffeeTable.events({
 	'click .coffeeBtn': function (event, template) {
