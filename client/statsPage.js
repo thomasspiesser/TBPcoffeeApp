@@ -1,161 +1,118 @@
+// var _ = lodash;
+var colors = randomColor({hue: 'blue', count: 100});
+
 Template.diagram.rendered = function () {
-	var data = collectBarData();
-  plotStackedMultibar(data); 
-};
+	var data = collectBarDataMonth();
+	plotStackedMultibar(data); 
+}
 
-Template.diagram2.rendered = function () {
-	var data = collectLineData();
-  plotLines(data); 
-};
-
-function collectBarData () {
-	var coffeeData = [];
-	coffeeData[0] = {
-		key: "Cappuccino",
-		color: "#4f99b4",
-		values: [],
-	};
-	coffeeData[1] = {
-		key: "Espresso",
-		color: "#d67777",
-		values: [],
-	};
-	
-	var users = Meteor.users.find().fetch();
-	users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com'; });
-	
+function collectBarDataMonth () {
+	var users = getUsers();
 	var sortedUsers = _.sortBy(users, function (user) {return -user.profile.espresso.length -user.profile.cappuccino.length} )
+	var monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+	// collect all coffee dates in one array
+	var coffee = [];
+	var consumers = [];
+	for (var i = 0; i < sortedUsers.length; i++) {
+		var user = sortedUsers[i];	
+		coffee = coffee.concat(user.profile.espresso);
+		coffee = coffee.concat(user.profile.cappuccino);
+		if (user.profile.espresso.length > 0 | user.profile.cappuccino.length > 0) {
+			consumers.push(user);
+		}
+	}
+
+	// find all year month combinations where data exists
+	var yearMonth = {};
+	for (var i in coffee) {
+		var year = coffee[i].getFullYear();
+		var month = coffee[i].getMonth();
+		if (yearMonth.hasOwnProperty(year)) {
+			yearMonth[year].push(month);
+		}
+		else {
+			yearMonth[year] = [];
+			yearMonth[year].push(month);
+		}
+	}
+	var count = 0;
+	for (var y in yearMonth) {
+		yearMonth[y] = _.uniq(yearMonth[y])
+		count += yearMonth[y].length;
+	}
+
+	// collect the data in the right format for a nvd3 multibar stacked plot
+	var coffeeData = [];
 	
-	for (var i = 0; i < sortedUsers.length; i++) {
-		var user = sortedUsers[i];
-		var userData = {
-			name: user.profile.name,
-			coffee: user.profile.cappuccino.length
-		};
-		coffeeData[0].values.push(userData);
-	};
+	// iterate over all years and month
+	var l = 0;
+	for (var year in yearMonth) {
+		if (yearMonth.hasOwnProperty(year)) {
+			var month = yearMonth[year];
+			for (var k = 0; k < month.length; k++) {		
+				coffeeData[l] = {
+					key: monthNames[month[k]]+" "+year,
+					color: colors[l],
+					values: []
+				}
+				l++;
+			}
+		}
+	}
 
-	for (var i = 0; i < sortedUsers.length; i++) {
-		var user = sortedUsers[i];
-		var userData = {
-			name: user.profile.name,
-			coffee: user.profile.espresso.length
-		};
-		coffeeData[1].values.push(userData);
-	};
+	// iterate over all consumers
+	for (var i = 0; i < consumers.length; i++) {
+		var user = consumers[i];
+		var l = 0;
+		for (var year in yearMonth) {
+			if (yearMonth.hasOwnProperty(year)) {
+				var month = yearMonth[year];
+				for (var k = 0; k < month.length; k++) {
+					var coffee = _.filter(user.profile.espresso, function(date){return date.getFullYear() == year && date.getMonth() == month[k]}).length;
+					coffee += _.filter(user.profile.cappuccino, function(date){return date.getFullYear() == year && date.getMonth() == month[k]}).length;
+					var userData = {
+						name: user.profile.name,
+						coffee: coffee
+					}
+					coffeeData[l].values.push(userData);
+					l++;
+				}
+			}
+		}
+	}
 	return coffeeData;
-};
-
-
-function collectLineData () {
-	var users = Meteor.users.find().fetch();
-	users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com'; });
-	var sortedUsers = _.sortBy(users, function (user) {return -user.profile.espresso.length -user.profile.cappuccino.length} )	
-	var colors = randomColor({hue: 'blue', count: users.length});
-	var coffeeCounts = [];
-	for (var i = 0; i < sortedUsers.length; i++) {
-		var user = sortedUsers[i];
-		var cappuccino = user.profile.cappuccino;
-		var espresso = user.profile.espresso;
-		var coffee = [];
-		coffee = coffee.concat(espresso);
-		coffee = coffee.concat(cappuccino);
-		var coffeeArray = getCountsPerDay(coffee);
-		var obj = {
-      values: coffeeArray,
-      key: user.profile.name,
-      color: colors[i]
-    };
-		coffeeCounts.push(obj);
-	}
-	return coffeeCounts;
-};
-
-
-function getCountsPerDay (arr) {
-	var results = {}, rarr = [], i;
-
-	for (i=0; i<arr.length; i++) {
-	  // get the date
-	  var date = Date.UTC(arr[i].getFullYear(),arr[i].getMonth(),arr[i].getDate());
-	  // var date = new Date(arr[i].getFullYear(),arr[i].getMonth(),arr[i].getDate(),0,0,0);
-	  results[date] = results[date] || 0;
-	  results[date]++;
-	}
-	// convert it into an array of objects
-	var obj = {};
-	for (i in results) {
-	  if (results.hasOwnProperty(i)) {
-	  	obj = {x: parseFloat(i), y: results[i]};
-	    rarr.push(obj);
-	  }
-	};
-	// sort by date
-	rarr = _.sortBy(rarr, function (obj) {return obj.x});
-	return rarr;
-};
-
+}
 
 function plotStackedMultibar(data) {  
-	nv.addGraph(function() {
-		// var width = 800
-		var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    // width = 960 - margin.left - margin.right,
-    height = 40*data[0].values.length + margin.top + margin.bottom;
-		
-		var chart = nv.models.multiBarHorizontalChart()
-		.x(function(d) { return d.name })
-		.y(function(d) { return d.coffee })
-		.margin(margin)
-		.showValues(true)           //Show bar value next to each bar.
-		.tooltips(true)             //Show tooltips on hover.
-		.transitionDuration(350)
-		.stacked(true)
-		.showControls(true)        //Allow user to switch between "Grouped" and "Stacked" mode.
-		// .width(width)
-		.height(height);
-		
-		chart.yAxis
-		.tickFormat(d3.format(',f'));
+	if (data.length > 0){
+		nv.addGraph(function() {
+			var margin = {top: 30, right: 0, bottom: 30, left: 150},
+			width = $(window).width() -margin.left -margin.right,
+		    height = 50*data[0].values.length -100;
 
-		d3.select('#coffeeChart svg')
-		.datum(data)
-		.attr('height', height + margin.top + margin.bottom)
-		.call(chart); 
+		    var chart = nv.models.multiBarHorizontalChart()
+		    .x(function(d) { return d.name })
+		    .y(function(d) { return d.coffee })
+		    .margin(margin)
+			.showValues(true)           //Show bar value next to each bar.
+			.stacked(true)
+			.showControls(false)        //Allow user to switch between "Grouped" and "Stacked" mode.
+			.width(width)
+			.height(height);
+			
+			chart.yAxis
+			.tickFormat(d3.format(',f'));
 
-		nv.utils.windowResize(chart.update);
+			d3.select('#coffeeChart svg')
+			.datum(data)		
+			.transition().duration(500)
+			.attr('height', height)
+			.attr('width', width)
+			.call(chart); 
 
-		return chart;
-	});
-};
-
-function plotLines(data) {  
-	nv.addGraph(function() {
-		var margin = {top: 20, right: 50, bottom: 30, left: 50},
-    // width = 960 - margin.left - margin.right,
-    height = 600 - margin.left - margin.right;
-
-	  var chart = nv.models.lineChart()
-	  // .useInteractiveGuideline(true)
-		.margin(margin)
-		.height(height);
-
-  chart.xAxis
-    .tickFormat(function(d) {
-      return d3.time.format("%d.%m.%y")(new Date(d))
-    });
-
-	  chart.yAxis
-	      .tickFormat(d3.format('d'));
-
-	  d3.select('#coffeeChart2 svg')
-	      .datum(data)
-	      .transition().duration(500)
-    		.attr('height', height)
-	      .call(chart);
-
-	  nv.utils.windowResize(chart.update);
-
-	  return chart;
-	});
-};
+			nv.utils.windowResize(chart.update);
+			return chart;
+		});
+	}
+}

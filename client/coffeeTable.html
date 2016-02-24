@@ -2,15 +2,18 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-lg-8 col-lg-offset-2">
-        <h1>{{getMonthYear}}</h1>
+        <div align="right">Total Count: {{getTotalCount}}</div>
+        <div align="right">Monthly Count: {{getMonthlyCount}}</div>
+        <div align="left"><h1>{{getMonthYear}}</h1></div>
         <table class='table coffeeTable table-striped'>
           <thead>
             <tr>
-              <th>Rank</th>
+              <!-- <th>Rank</th> -->
               <th>Name</th>
               <th>Drink</th>
               <th>Cappuccini</th>
               <th>Espressi</th>
+              <th>Total Count</th>
               <th>Add Credit</th>
               <th>Account</th>
             </tr>
@@ -18,16 +21,17 @@
           <tbody>
             {{#each users}}
             <tr>
-              <td>{{_index}}.</td>
-              <td>{{profile.name}}</td>
+              <!-- <td>{{_index}}.</td> -->
+              <td>{{#emojione}}{{getAchievements}}{{/emojione}}{{profile.name}}</td>
               <td>
-                <button type="button" class="btn coffeeBtn btn btn-primary" name="cappuccino"><b>Cappuccino</b></button>
-                <button type="button" class="btn coffeeBtn btn btn-primary" name="espresso"><b>Espresso</b></button>
+                <button type="button" class="btn coffeeBtn btn btn-primary" name="cappuccino">Cappuccino</button>
+                <button type="button" class="btn coffeeBtn btn btn-primary" name="espresso">Espresso</button>
               </td>
               <td>{{getCoffeeCount.cappuccino}}</td>
               <td>{{getCoffeeCount.espresso}}</td>
+              <td>{{getUserCount}}</td>
               <td>
-                <button type="button" class="btn accountBtn btn btn-success"><b>+</b></button>
+                <button type="button" class="btn accountBtn btn btn-success">+</button>
               </td>
               <td style="color: {{setAccountColor}}">{{getAccount}} € </td>
             </tr>

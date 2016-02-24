@@ -11,6 +11,10 @@ Meteor.startup(function () {
 	}
 });
 
+Accounts.config({
+	forbidClientAccountCreation: true
+});
+
 Meteor.publish('TBPCoffeeCollection', 
 	function () {
 		return Meteor.users.find({ }, { emails:0, profile: 1});

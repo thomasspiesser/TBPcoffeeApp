@@ -1,3 +1,6 @@
+var _ = lodash;
+
+/*
 Template.coffeeTable.rendered = function () {
 	$.fn.snow({
 		minSize: 5, // Minimumsize of the snowflake (px)
@@ -5,17 +8,16 @@ Template.coffeeTable.rendered = function () {
 		newOn: 250, // Frequency they fall (ms)
 		flakeColor: '#000' // Colour of the snowflake
 	});
-};
+}
+*/
 
 Template.coffeeTable.helpers({
 	users: function () {
-		var users = Meteor.users.find( {$where: function() { 
-			// _.where(this.profile.espresso, {author: "Shakespeare", year: 1611});
-			return true; 
-		} } ).fetch();
-
-		users = _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com';});
-		var sortedUsers = _.sortBy(users, function (user) {return -user.profile.espresso.length -user.profile.cappuccino.length} ) // FIXME: sort users according to current month
+		var users = getUsers();
+		var sortedUsers = _.sortBy(users, function (user) {
+			return -(_.filter(user.profile.espresso, function(date){return (date.getMonth() == new Date().getMonth()) && (date.getFullYear() == new Date().getFullYear())}).length 
+				+_.filter(user.profile.cappuccino, function(date){return (date.getMonth() == new Date().getMonth()) && (date.getFullYear() == new Date().getFullYear())}).length)
+		});
 		sortedUsers.map(function(user, index, cursor) {
 			user._index = index+1;
 			return user;
@@ -23,40 +25,102 @@ Template.coffeeTable.helpers({
 		return sortedUsers;
 	},
 	getMonthYear: function () {
-		var currentMonth = new Date().getMonth();
-		var currentYear = new Date().getFullYear();
-		var monthArray=new Array("January","February","March",
-			"April","May","June","July","August","September",
-			"October","November","December");
-		return monthArray[currentMonth]+" "+currentYear;
+		var monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+		return monthNames[new Date().getMonth()]+" "+new Date().getFullYear();
 	},
 	getCoffeeCount: function () {
-		var currentMonth = new Date().getMonth();
-		var espressoCount = _.filter(this.profile.espresso, function(date){ return date.getMonth() == currentMonth; }).length;
-		var cappuccinoCount = _.filter(this.profile.cappuccino, function(date){ return date.getMonth() == currentMonth; }).length;
-		return {espresso:espressoCount, cappuccino:cappuccinoCount};
+		var espressoCount = _.filter(this.profile.espresso, function(date){ return (date.getMonth() == new Date().getMonth()) && (date.getFullYear() == new Date().getFullYear()); }).length;
+		var cappuccinoCount = _.filter(this.profile.cappuccino, function(date){ return (date.getMonth() == new Date().getMonth()) && (date.getFullYear() == new Date().getFullYear()); }).length;
+		return {espresso:espressoCount, cappuccino:cappuccinoCount}
 	},
 	getAccount: function () {
 		var espressoAmount = this.profile.espresso.length * 0.3; // FIXME: get price from DB
 		var cappuccinoAmount = this.profile.cappuccino.length * 0.4; // FIXME: get price from DB
-		var creditArray = _.pluck(this.profile.account, 'amount');
+		var creditArray = _.mapValues(this.profile.account, 'amount');
 		var account = - espressoAmount - cappuccinoAmount;
-		for (var i = 0; i < creditArray.length; i++) {
+		for (var i = 0; i < _.size(creditArray); i++) {
 			account += creditArray[i];
-		};
+		}
 		return account.toFixed(2);
 	},
 	setAccountColor: function () {
 		var espressoAmount = this.profile.espresso.length * 0.3; // FIXME: get price from DB
 		var cappuccinoAmount = this.profile.cappuccino.length * 0.4; // FIXME: get price from DB
-		var creditArray = _.pluck(this.profile.account, 'amount');
+		var creditArray = _.mapValues(this.profile.account, 'amount');
 		var account = - espressoAmount - cappuccinoAmount;
-		for (var i = 0; i < creditArray.length; i++) {
+		for (var i = 0; i < _.size(creditArray); i++) {
 			account += creditArray[i];
-		};
+		}
 		return account >= 0 ? "black": "red";
+	},
+	getTotalCount: function () {
+		var users = getUsers();
+		var totalCount = 0;
+		for(var i = 0; i < users.length; i++) {
+			totalCount = totalCount + users[i].profile.espresso.length + users[i].profile.cappuccino.length;
+		}
+		return totalCount;
+	},
+	getUserCount: function () {
+		return this.profile.espresso.length + this.profile.cappuccino.length;
+	},
+	getMonthlyCount: function () {
+		var users = getUsers();
+		var monthlyCount = 0;
+		for(var i = 0; i < users.length; i++) {
+            monthlyCount += _.filter(users[i].profile.espresso,
+					function(date){
+						return (date.getMonth() == new Date().getMonth()) && (date.getFullYear() == new Date().getFullYear());
+					}).length
+				+ _.filter(users[i].profile.cappuccino, function(date){
+					return (date.getMonth() == new Date().getMonth()) && (date.getFullYear() == new Date().getFullYear()); }).length;
+		}
+		return monthlyCount;
+	},
+	getAchievements: function() {
+		// Emojis from http://emojione.com/demo/
+        var date = Session.get("today");
+        var achievements = "";
+        var coffee_today = _.filter(this.profile.espresso,
+                function(date){
+                    return (date.getDate() == new Date().getDate() &&
+					date.getYear() == new Date().getYear() &&
+						date.getMonth() == new Date().getMonth()); }).length +
+            _.filter(this.profile.cappuccino,
+                function(date){
+                    return (date.getDate() == new Date().getDate()) &&
+						date.getYear() == new Date().getYear() &&
+						date.getMonth() == new Date().getMonth(); }).length;
+		var user_total = this.profile.espresso.length + this.profile.cappuccino.length;
+
+		var espressoAmount = this.profile.espresso.length * 0.3; // FIXME: get price from DB
+		var cappuccinoAmount = this.profile.cappuccino.length * 0.4; // FIXME: get price from DB
+		var creditArray = _.mapValues(this.profile.account, 'amount');
+		var user_account = - espressoAmount - cappuccinoAmount;
+		for (var i = 0; i < _.size(creditArray); i++) {
+			user_account += creditArray[i];
+		}
+		user_account = 	user_account.toFixed(2)
+
+		if(user_total >= 1000) achievements += ":trophy:"
+	        if(user_total >= 500) achievements += ":medal:";
+	        if(user_total >= 250) achievements += ":military_medal:";
+	        if(user_total >= 100) achievements += ":star:";
+	        if(user_total < 10) achievements += ":baby_tone1:";
+	        
+	        if(user_account < -10) achievements = ":money_mouth:";
+	        if(coffee_today > 0) achievements += ":coffee:";
+
+		return achievements;
 	}
 });
+
+// update achievements every 6h so the coffee cup is removed every morning.
+Session.setDefault("today", new Date());
+Meteor.setInterval(function (){
+	var date = new Date();
+	Session.set("today", date.getMilliseconds());
+}, 3600000);
 
 Template.coffeeTable.events({
 	'click .coffeeBtn': function (event, template) {
@@ -78,3 +142,8 @@ Template.coffeeTable.events({
 		Session.set("changeAccountUser", this._id);
 	}
 });
+
+getUsers = function () {
+	var users = Meteor.users.find( {$where: function() { return true;} } ).fetch();
+	return _.filter(users, function(user){ return user.emails[0].address != 'admin@admin.com';});
+};
