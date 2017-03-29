@@ -100,9 +100,10 @@ Template.coffeeTable.helpers({
 		for (var i = 0; i < _.size(creditArray); i++) {
 			user_account += creditArray[i];
 		}
-		user_account = 	user_account.toFixed(2)
+		user_account =	user_account.toFixed(2);
 
-		if(user_total >= 1000) achievements += ":trophy:"
+		if(user_total >= 2000) achievements += ":crown:";
+		if(user_total >= 1000) achievements += ":trophy:";
 	        if(user_total >= 500) achievements += ":medal:";
 	        if(user_total >= 250) achievements += ":military_medal:";
 	        if(user_total >= 100) achievements += ":star:";
